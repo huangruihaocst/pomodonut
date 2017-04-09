@@ -2,6 +2,7 @@ package edu.neu.madcourse.zhongxiruihao.pomodonut;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
@@ -19,7 +20,17 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        Toast.makeText(this,"Service Started",Toast.LENGTH_LONG).show();
+
+        final Service s=this;
+        CountDownTimer countDownTimer=new CountDownTimer(15000,3000){
+            @Override
+            public void onTick(long millisUntilFinished){
+                Toast.makeText(s,"hello",Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onFinish(){}
+        };
+        countDownTimer.start();
         return START_STICKY;
     }
 
