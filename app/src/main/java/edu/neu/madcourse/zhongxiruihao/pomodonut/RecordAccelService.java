@@ -7,16 +7,19 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
+
+import com.orm.SugarContext;
+
+import edu.neu.madcourse.zhongxiruihao.pomodonut.DataStructure.TemporaryDataPoint;
 
 /**
  * Created by Ben_Big on 4/9/17.
  */
 
-public class MyService extends Service {
+public class RecordAccelService extends Service {
 
     private SensorManager mSensorManager;
     private final Service thisService=this;
@@ -40,17 +43,9 @@ public class MyService extends Service {
         mAccelLast=SensorManager.GRAVITY_EARTH;
         mAccel = 0.00f;
 
-        /**
-        final Service s=this;
-        CountDownTimer countDownTimer=new CountDownTimer(1500000,3000){
-            @Override
-            public void onTick(long millisUntilFinished){
-                Toast.makeText(s,"hello",Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onFinish(){}
-        };
-        countDownTimer.start();*/
+        SugarContext.init(this);
+
+
         return START_STICKY;
     }
 
@@ -73,9 +68,14 @@ public class MyService extends Service {
             mAccelCurrent = (float) Math.sqrt((double) (x*x + y*y + z*z));
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel * 0.9f + delta;
-
-            if (mAccel > 24) {
+            /*
+            if (mAccel > 7) {
                 Toast.makeText(thisService, "" + mAccel, Toast.LENGTH_SHORT).show();
+            }*/
+            if (Math.abs(mAccel)>3) {
+                long currentTime = System.currentTimeMillis();
+                TemporaryDataPoint point = new TemporaryDataPoint(currentTime, Math.abs(mAccel));
+                point.save();
             }
         }
 
