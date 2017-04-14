@@ -47,6 +47,12 @@ public class AccelProcessService extends Service {
                             "Select * from TEMPORARY_DATA_POINT where time < ?",
                             "" + currentTime
                     );
+                    for (int i=0;i<points.size()/3;i++){
+                        TemporaryDataPoint point=points.get(i);
+                        point.delete();
+                    }
+
+
                     Toast.makeText(thisService, "" + points.size(), Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception exception){
