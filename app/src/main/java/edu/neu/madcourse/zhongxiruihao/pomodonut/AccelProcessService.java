@@ -1,20 +1,18 @@
 package edu.neu.madcourse.zhongxiruihao.pomodonut;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.orm.SugarContext;
 
 import java.util.List;
-import java.util.Timer;
 
+import edu.neu.madcourse.zhongxiruihao.pomodonut.DataStructure.PermanentDataPoint;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.DataStructure.TemporaryDataPoint;
 
 /**
@@ -22,6 +20,9 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.DataStructure.TemporaryDataPoin
  */
 
 public class AccelProcessService extends Service {
+    public static final int INTERVAL=3000;
+
+
     CountDownTimer timer;
     private final Service thisService=this;
 
@@ -37,7 +38,7 @@ public class AccelProcessService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId){
         SugarContext.init(this);
 
-        timer=new CountDownTimer(30000,3000){
+        timer=new CountDownTimer(INTERVAL*10,INTERVAL){
             @Override
             public void onTick(long millisUntilFinished){
                 try {
@@ -47,15 +48,22 @@ public class AccelProcessService extends Service {
                             "Select * from TEMPORARY_DATA_POINT where time < ?",
                             "" + currentTime
                     );
-                    for (int i=0;i<points.size()/3;i++){
+
+                    for (int i=0;i<points.size();i++){
                         TemporaryDataPoint point=points.get(i);
                         point.delete();
+                    }
+
+                    List<PermanentDataPoint> listOfPoints= CalAverageAccel.calAverage(points,currentTime);
+                    for (PermanentDataPoint point : listOfPoints){
+                        point.save();
                     }
 
 
                     Toast.makeText(thisService, "" + points.size(), Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception exception){
+                    Log.d("abc",exception.toString());
                     Toast.makeText(thisService, "No such table",Toast.LENGTH_SHORT).show();
                 }
             }

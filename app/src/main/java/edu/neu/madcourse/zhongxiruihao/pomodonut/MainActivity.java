@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void stopService(View view){
         stopService(new Intent(getBaseContext(),RecordAccelService.class));
+        stopService(new Intent(getBaseContext(),AccelProcessService.class));
     }
 
 
