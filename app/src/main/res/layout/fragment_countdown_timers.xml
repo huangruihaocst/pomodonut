@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context="edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.CountdownTimersFragment"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/content_main">
