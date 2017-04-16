@@ -1,5 +1,7 @@
 package edu.neu.madcourse.zhongxiruihao.pomodonut;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,12 +18,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void startService(View view){
+        if (!isMyServiceRunning(RecordAccelService.class)) {
+            startService(new Intent(getBaseContext(), RecordAccelService.class));
+            Toast.makeText(this, "RecordAccelService started", Toast.LENGTH_LONG).show();
+        }
 
-        Toast.makeText(this,"Service started",Toast.LENGTH_LONG).show();
+        if (!isMyServiceRunning(AccelProcessService.class)) {
+            startService(new Intent(getBaseContext(), AccelProcessService.class));
+            Toast.makeText(this, "AccelProcess started", Toast.LENGTH_LONG).show();
+        }
 
-        startService(new Intent(getBaseContext(),RecordAccelService.class));
-
-        startService(new Intent(getBaseContext(),AccelProcessService.class));
     }
 
     public void stopService(View view){
@@ -29,5 +35,13 @@ public class MainActivity extends AppCompatActivity {
         stopService(new Intent(getBaseContext(),AccelProcessService.class));
     }
 
-
+    private boolean isMyServiceRunning(Class<?> serviceClass){
+        ActivityManager manager=(ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service: manager.getRunningServices(Integer.MAX_VALUE)){
+            if (serviceClass.getName().equals(service.service.getClassName())){
+                return true;
+            }
+        }
+        return false;
+    }
 }
