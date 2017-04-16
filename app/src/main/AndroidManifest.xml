@@ -15,17 +15,31 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <meta-data android:name="DATABASE" android:value="pomodonut.db" />
-        <meta-data android:name="VERSION" android:value="1" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="edu.neu.madcourse.zhongxiruihao.pomodonut" />
+        <meta-data
+            android:name="DATABASE"
+            android:value="pomodonut.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="1" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="edu.neu.madcourse.zhongxiruihao.pomodonut" />
 
-        <service android:name=".sensor.AccelProcessService"/>
-        <service android:name=".sensor.AccelProcessService"/>
+        <service android:name=".sensor.AccelProcessService" />
+        <service android:name=".sensor.AccelProcessService" />
+
+        <activity
+            android:name=".dayview.DayViewActivity"
+            android:label="@string/title_activity_day_view"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
