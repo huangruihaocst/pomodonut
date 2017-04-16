@@ -55,7 +55,7 @@ public class DayViewActivityFragment extends Fragment {
         setScrollable(scrollView, weekView);
 
         LineChart lineChart = (LineChart) root.findViewById(R.id.line_chart);
-        setLineChart(lineChart, 1970, 1, 1);
+        setLineChart(lineChart, 2017, 4, 16);
 
         return root;
     }
@@ -99,17 +99,10 @@ public class DayViewActivityFragment extends Fragment {
         int recordPerDay = MINUTE_PER_DAY / recordFrequency;
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, date);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-//        calendar.set(year, month, date, 0, 0, 0);
-//        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        calendar.set(year, month - 1, date, 0, 0, 0);
         long startUTC = calendar.getTimeInMillis() + TimeZone.getDefault().getRawOffset();
         calendar.add(Calendar.DAY_OF_YEAR, 1);
-        long endUTC = calendar.getTimeInMillis() + TimeZone.getDefault().getRawOffset();
+        long endUTC = calendar.getTime().getTime() + TimeZone.getDefault().getRawOffset();
 
         List<PermanentDataPoint> permanentDataPointList = PermanentDataPoint
                 .findWithQuery(PermanentDataPoint.class,
