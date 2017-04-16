@@ -1,11 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.neu.madcourse.zhongxiruihao.pomodonut.dayview.DayViewActivityFragment"
-    tools:showIn="@layout/activity_day_view">
+    android:id="@+id/scroll_view">
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal">
+        <com.alamkanak.weekview.WeekView
+            android:layout_weight="1"
+            android:id="@+id/week_view"
+            android:layout_width="0dp"
+            android:layout_height="1480dp"
+            app:eventTextColor="@android:color/white"
+            app:textSize="12sp"
+            app:hourHeight="60dp"
+            app:headerColumnPadding="8dp"
+            app:headerColumnTextColor="#8f000000"
+            app:headerRowPadding="12dp"
+            app:columnGap="8dp"
+            app:noOfVisibleDays="1"
+            app:headerRowBackgroundColor="#ffefefef"
+            app:dayBackgroundColor="#05000000"
+            app:todayBackgroundColor="#1848adff"
+            app:headerColumnBackground="#ffffffff"
+            app:xScrollingSpeed="0"/>
 
-
-</android.support.constraint.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:text="@string/text_accelerometer_data"
+                android:background="#EFEFEF"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="#2789E4">
+            </TextView>
+            <com.github.mikephil.charting.charts.LineChart
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/line_chart"
+                android:rotation="90"
+                android:scaleY="0.14"
+                android:scaleX="8.15">
+            </com.github.mikephil.charting.charts.LineChart>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
