@@ -15,6 +15,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -28,6 +29,10 @@
         <service android:name=".sensor.RecordAccelService"/>
 
 
+        <activity
+            android:name=".dayview.DayViewActivity"
+            android:label="@string/title_activity_day_view"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
