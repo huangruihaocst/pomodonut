@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.CountdownTimersFragment"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/content_main">
 
     <include layout="@layout/countdown_timer"
         android:layout_width="wrap_content"
