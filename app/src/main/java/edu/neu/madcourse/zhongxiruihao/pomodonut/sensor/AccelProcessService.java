@@ -2,8 +2,10 @@ package edu.neu.madcourse.zhongxiruihao.pomodonut.sensor;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,11 +23,10 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.models.TemporaryDataPoin
 
 public class AccelProcessService extends Service {
     public static final int INTERVAL=60000;
-
-
     CountDownTimer timer;
     private final Service thisService=this;
-
+    private SharedPreferences preferences;
+    public static final String SERVICE_STATE="accelProcessServiceState";
 
     @Nullable
     @Override
@@ -36,6 +37,10 @@ public class AccelProcessService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+        preferences=PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.edit().putBoolean(SERVICE_STATE,true).commit();
+
+
         SugarContext.init(this);
 
         timer=new CountDownTimer(INTERVAL*10,INTERVAL){
@@ -56,7 +61,10 @@ public class AccelProcessService extends Service {
 
                     List<PermanentDataPoint> listOfPoints= CalAverageAccel.calAverage(points,currentTime);
                     for (PermanentDataPoint point : listOfPoints){
-                        point.save();
+                        try {
+                            point.save();
+                        }
+                        catch (Exception e){}
                     }
 
 
@@ -82,6 +90,7 @@ public class AccelProcessService extends Service {
     public void onDestroy(){
         super.onDestroy();
         timer.cancel();
+        preferences.edit().putBoolean(SERVICE_STATE,false).commit();
         Toast.makeText(this,"Service Destroyed",Toast.LENGTH_LONG).show();
     }
 }
