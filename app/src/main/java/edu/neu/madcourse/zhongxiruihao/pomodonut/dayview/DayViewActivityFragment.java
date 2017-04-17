@@ -1,6 +1,7 @@
 package edu.neu.madcourse.zhongxiruihao.pomodonut.dayview;
 
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
