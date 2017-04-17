@@ -72,11 +72,10 @@ public class RecordAccelService extends Service {
             if (mAccel > 7) {
                 Toast.makeText(thisService, "" + mAccel, Toast.LENGTH_SHORT).show();
             }*/
-            if (Math.abs(mAccel)>3) {
-                long currentTime = System.currentTimeMillis();
-                TemporaryDataPoint point = new TemporaryDataPoint(currentTime, Math.abs(mAccel));
-                point.save();
-            }
+            long currentTime = System.currentTimeMillis();
+            TemporaryDataPoint point = new TemporaryDataPoint(currentTime, Math.abs(mAccel));
+            point.save();
+
         }
 
         @Override
