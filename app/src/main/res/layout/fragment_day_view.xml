@@ -44,12 +44,13 @@
                 android:textColor="#2789E4">
             </TextView>
             <com.github.mikephil.charting.charts.LineChart
+                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/line_chart"
                 android:rotation="90"
                 android:scaleY="0.14"
-                android:scaleX="8.15">
+                android:scaleX="8.2">
             </com.github.mikephil.charting.charts.LineChart>
         </LinearLayout>
     </LinearLayout>

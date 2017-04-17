@@ -21,10 +21,16 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
+import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
@@ -51,7 +57,8 @@ public class DayViewActivityFragment extends Fragment {
         setScrollable(scrollView, weekView);
 
         LineChart lineChart = (LineChart) root.findViewById(R.id.line_chart);
-        setLineChart(lineChart, 2017, 4, 16);
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        setLineChart(lineChart, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
 
         return root;
     }
@@ -94,27 +101,46 @@ public class DayViewActivityFragment extends Fragment {
         int recordFrequency = getContext().getResources().getInteger(R.integer.record_accel_frequency);
         int recordPerDay = MINUTE_PER_DAY / recordFrequency;
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, date, 0, 0, 0);
-        long startUTC = calendar.getTimeInMillis() + TimeZone.getDefault().getRawOffset();
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
-        long endUTC = calendar.getTime().getTime() + TimeZone.getDefault().getRawOffset();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
+                Locale.getDefault());
+        String dateString = String.format(Locale.US, "%04d", year) + "-"
+                + String.format(Locale.US, "%2d", month) + "-"
+                + String.format(Locale.US, "%2d", date) + "T"
+                + "00:00:00Z";
+        long startUnix = 0, endUnix = 0;
+        try {
+            Date d = simpleDateFormat.parse(dateString);
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            startUnix = d.getTime();
+            dateString = String.format(Locale.US, "%04d", year) + "-"
+                    + String.format(Locale.US, "%2d", month) + "-"
+                    + String.format(Locale.US, "%2d", date) + "T"
+                    + "23:59:59Z";
+            simpleDateFormat.setTimeZone(TimeZone.getDefault());
+            d = simpleDateFormat.parse(dateString);
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            endUnix = d.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         List<PermanentDataPoint> permanentDataPointList = PermanentDataPoint
                 .findWithQuery(PermanentDataPoint.class,
                         "select * from PERMANENT_DATA_POINT where time >= ? and time < ?",
-                        String.valueOf(startUTC), String.valueOf(endUTC));
-        Log.d("offset", "" + TimeZone.getDefault().getRawOffset());
-        Log.d("timezone", calendar.getTimeZone().toString());
-        Log.d("time", startUTC + " " + endUTC);
-        Log.i("size", "" + permanentDataPointList.size());
-        Random random = new Random();
+                        String.valueOf(startUnix), String.valueOf(endUnix));
 
         List<Entry> lineEntries = new ArrayList<>();
-        for (int i = 0; i < 240; ++i) {
-            lineEntries.add(new Entry(i, random.nextFloat() * 10));
+        for (int i = 0; i < recordPerDay; ++i) {
+            lineEntries.add(new Entry(i, 0));
         }
-        LineDataSet lineDataSet = new LineDataSet(lineEntries, "data set 1");
+        for (PermanentDataPoint permanentDataPoint: permanentDataPointList) {
+            if (permanentDataPoint.accelerationData != 0) {
+                double portion = (double) (permanentDataPoint.time - startUnix) / (endUnix - startUnix);
+                int index = (int) (portion * recordPerDay);
+                lineEntries.set(index, new Entry(index, (float) permanentDataPoint.accelerationData));
+            }
+        }
+        LineDataSet lineDataSet = new LineDataSet(lineEntries, "accel data");
         lineDataSet.setLineWidth(0.1f);
         lineDataSet.setDrawValues(false);
         lineDataSet.setDrawCircles(false);
@@ -125,7 +151,7 @@ public class DayViewActivityFragment extends Fragment {
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setDrawLabels(false);
         YAxis yAxis = lineChart.getAxisLeft();
-        yAxis.setAxisMaximum(10);
+        yAxis.setAxisMaximum(40);
         yAxis.setAxisMinimum(0);
         yAxis.setDrawLabels(false);
         yAxis = lineChart.getAxisRight();

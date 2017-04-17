@@ -8,8 +8,8 @@ import com.orm.SugarRecord;
 
 public class PermanentDataPoint extends SugarRecord {
 
-    long time;
-    double accelerationData;
+    public long time;
+    public double accelerationData;
 
     public PermanentDataPoint(){
     }
