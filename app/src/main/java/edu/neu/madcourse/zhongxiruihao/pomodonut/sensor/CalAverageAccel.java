@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.module.PermanentDataPoint;
-import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.module.TemporaryDataPoint;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.models.PermanentDataPoint;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.models.TemporaryDataPoint;
 
 /**
  * Created by Ben_Big on 4/15/17.

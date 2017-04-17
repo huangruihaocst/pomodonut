@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.orm.SugarContext;
 
-import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.module.TemporaryDataPoint;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.models.TemporaryDataPoint;
 
 /**
  * Created by Ben_Big on 4/15/17.

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
@@ -22,17 +21,14 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
-import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.module.PermanentDataPoint;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.models.PermanentDataPoint;
 
 /**
  * A placeholder fragment containing a simple view.

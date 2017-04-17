@@ -1,4 +1,4 @@
-package edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.module;
+package edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.models;
 
 import com.orm.SugarRecord;
 
