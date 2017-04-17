@@ -61,7 +61,10 @@ public class AccelProcessService extends Service {
 
                     List<PermanentDataPoint> listOfPoints= CalAverageAccel.calAverage(points,currentTime);
                     for (PermanentDataPoint point : listOfPoints){
-                        point.save();
+                        try {
+                            point.save();
+                        }
+                        catch (Exception e){}
                     }
 
 

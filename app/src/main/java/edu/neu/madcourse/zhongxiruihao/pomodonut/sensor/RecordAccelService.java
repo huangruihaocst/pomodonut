@@ -84,7 +84,10 @@ public class RecordAccelService extends Service {
             if (Math.abs(mAccel)>3) {
                 long currentTime = System.currentTimeMillis();
                 TemporaryDataPoint point = new TemporaryDataPoint(currentTime, Math.abs(mAccel));
-                point.save();
+                try {
+                    point.save();
+                }
+                catch (Exception e){}
             }
         }
 
