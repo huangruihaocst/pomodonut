@@ -82,12 +82,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void startSensorServices(){
-        if (! preferences.getBoolean(AccelProcessService.SERVICE_STATE,false)) {
+       if (!isMyServiceRunning(RecordAccelService.class)){
             startService(new Intent(getBaseContext(), RecordAccelService.class));
             Toast.makeText(this, "RecordAccelService started", Toast.LENGTH_LONG).show();
         }
 
-        if (! preferences.getBoolean(RecordAccelService.SERVICE_STATE,false)) {
+        if (!isMyServiceRunning(AccelProcessService.class)){
             startService(new Intent(getBaseContext(), AccelProcessService.class));
             Toast.makeText(this, "AccelProcess started", Toast.LENGTH_LONG).show();
         }
