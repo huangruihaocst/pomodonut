@@ -3,7 +3,10 @@ package edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
@@ -26,14 +29,14 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
 
+    private SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        startSensorServices();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         }
         viewPager.setAdapter(new CountdownTimersPagerAdapter(getSupportFragmentManager(),
                 NUM_PAGES, fragments));
+
+        preferences= PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        startSensorServices();
     }
 
     @Override
@@ -72,13 +79,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
     private void startSensorServices(){
-        if (!isMyServiceRunning(RecordAccelService.class)) {
+        if (! preferences.getBoolean(AccelProcessService.SERVICE_STATE,false)) {
             startService(new Intent(getBaseContext(), RecordAccelService.class));
             Toast.makeText(this, "RecordAccelService started", Toast.LENGTH_LONG).show();
         }
 
-        if (!isMyServiceRunning(AccelProcessService.class)) {
+        if (! preferences.getBoolean(RecordAccelService.SERVICE_STATE,false)) {
             startService(new Intent(getBaseContext(), AccelProcessService.class));
             Toast.makeText(this, "AccelProcess started", Toast.LENGTH_LONG).show();
         }

@@ -3,11 +3,13 @@ package edu.neu.madcourse.zhongxiruihao.pomodonut.sensor;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
@@ -26,17 +28,23 @@ public class RecordAccelService extends Service {
     private float mAccelCurrent;
     private float mAccelLast;
     private float mAccel; // last acceleration including gravity
-
+    private SharedPreferences preferences;
+    public static final String SERVICE_STATE="recordProcessServiceState";
 
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent){
+
         return null;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+        preferences= PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.edit().putBoolean(SERVICE_STATE,true).commit();
+
+
         mSensorManager = (SensorManager)this.getSystemService(Context.SENSOR_SERVICE);
         mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
         mAccelCurrent=SensorManager.GRAVITY_EARTH;
@@ -53,6 +61,7 @@ public class RecordAccelService extends Service {
     public void onDestroy(){
         super.onDestroy();
         mSensorManager.unregisterListener(mSensorListener);
+        preferences.edit().putBoolean(SERVICE_STATE,false).commit();
         Toast.makeText(this,"Service Destroyed", Toast.LENGTH_LONG).show();
     }
 
@@ -72,10 +81,11 @@ public class RecordAccelService extends Service {
             if (mAccel > 7) {
                 Toast.makeText(thisService, "" + mAccel, Toast.LENGTH_SHORT).show();
             }*/
-            long currentTime = System.currentTimeMillis();
-            TemporaryDataPoint point = new TemporaryDataPoint(currentTime, Math.abs(mAccel));
-            point.save();
-
+            if (Math.abs(mAccel)>1) {
+                long currentTime = System.currentTimeMillis();
+                TemporaryDataPoint point = new TemporaryDataPoint(currentTime, Math.abs(mAccel));
+                point.save();
+            }
         }
 
         @Override

@@ -20,6 +20,8 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.orm.SugarContext;
+import com.orm.SugarRecord;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -44,6 +46,18 @@ public class DayViewActivityFragment extends Fragment {
     private static final int MINUTE_PER_DAY = 24 * 60;
 
     public DayViewActivityFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SugarContext.init(getActivity());
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        SugarContext.terminate();
     }
 
     @Override
