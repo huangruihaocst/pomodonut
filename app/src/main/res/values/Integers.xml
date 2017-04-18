@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--1 minute-->
-    <integer name="record_accel_frequency">1</integer>
+    <integer name="record_accel_frequency">15</integer>
 </resources>

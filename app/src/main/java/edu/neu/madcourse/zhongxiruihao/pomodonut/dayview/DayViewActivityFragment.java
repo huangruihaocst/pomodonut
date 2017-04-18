@@ -1,11 +1,9 @@
 package edu.neu.madcourse.zhongxiruihao.pomodonut.dayview;
 
 import android.graphics.Color;
-import android.graphics.RectF;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +20,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.orm.SugarContext;
-import com.orm.SugarRecord;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,8 +28,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
-import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
@@ -44,7 +38,7 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.models.PermanentDataPoin
  */
 public class DayViewActivityFragment extends Fragment {
 
-    private static final int MINUTE_PER_DAY = 24 * 60;
+    private static final int SECONDS_PER_DAY = 24 * 60 * 60;
 
     public DayViewActivityFragment() {
     }
@@ -85,7 +79,7 @@ public class DayViewActivityFragment extends Fragment {
         event.setName("event name");
 
         Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 3);
+        startTime.set(Calendar.HOUR_OF_DAY, 4);
         startTime.set(Calendar.MINUTE, 0);
         startTime.set(Calendar.MONTH, month - 1);
         startTime.set(Calendar.YEAR, year);
@@ -96,7 +90,7 @@ public class DayViewActivityFragment extends Fragment {
         endTime.set(Calendar.MONTH, month - 1);
         event.setEndTime(endTime);
 
-        event.setColor(Color.RED);
+        event.setColor(Color.BLUE);
 
         events.add(event);
         return events;
@@ -114,7 +108,7 @@ public class DayViewActivityFragment extends Fragment {
     // year, month, date in current timezone
     private void setLineChart(LineChart lineChart, int year, int month, int date) {
         int recordFrequency = getContext().getResources().getInteger(R.integer.record_accel_frequency);
-        int recordPerDay = MINUTE_PER_DAY / recordFrequency;
+        int recordPerDay = SECONDS_PER_DAY / recordFrequency;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
                 Locale.getDefault());
@@ -165,8 +159,9 @@ public class DayViewActivityFragment extends Fragment {
         lineChart.setScaleEnabled(false);
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setDrawLabels(false);
+        xAxis.setEnabled(false);
         YAxis yAxis = lineChart.getAxisLeft();
-        yAxis.setAxisMaximum(40);
+        yAxis.setAxisMaximum(20);
         yAxis.setAxisMinimum(0);
         yAxis.setDrawLabels(false);
         yAxis = lineChart.getAxisRight();
