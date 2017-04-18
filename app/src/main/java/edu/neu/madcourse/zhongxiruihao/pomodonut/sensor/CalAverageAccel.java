@@ -17,7 +17,7 @@ public class CalAverageAccel {
 
         List<PermanentDataPoint> result=new ArrayList<>();
         if (points.size()==0){
-            PermanentDataPoint point =new PermanentDataPoint(currentTime-AccelProcessService.INTERVAL,Math.random()*(3+1));
+            PermanentDataPoint point =new PermanentDataPoint(currentTime-AccelProcessService.INTERVAL,Math.random()*(1.5));
             result.add(point);
             return result;
         }
