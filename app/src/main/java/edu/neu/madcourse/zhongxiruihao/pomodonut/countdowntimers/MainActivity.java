@@ -1,11 +1,13 @@
 package edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers;
 
 import android.app.ActivityManager;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.dayview.DayViewActivity;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.notification.TimerNotification;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.AccelProcessService;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.RecordAccelService;
 
@@ -58,6 +61,30 @@ public class MainActivity extends AppCompatActivity {
         preferences= PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         startSensorServices();
+
+
+        /*
+        final TimerNotification timerNotification=new TimerNotification((NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE));
+        Intent intent=new Intent(this,MainActivity.class);
+        timerNotification.makeNotification(this,intent,"Test","Another test");
+
+        CountDownTimer timer=new CountDownTimer(1000*15,1000) {
+            @Override
+            public void onTick(long millisUnitilFinished) {
+                try{
+                    timerNotification.updateNotification("New Test",""+(int)(millisUnitilFinished/1000));
+                }
+                catch (Exception e){
+                }
+            }
+            @Override
+            public void onFinish() {
+                timerNotification.cancelNotification();
+            }
+        }.start();*/
+
+
+
     }
 
     @Override
