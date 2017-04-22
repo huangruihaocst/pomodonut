@@ -8,14 +8,14 @@
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title"
+        android:text="00:00"
         android:textAlignment="center"
         android:textSize="30sp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="00:00"
+        android:text="Title"
         android:textAlignment="center"
         android:textSize="30sp"/>
 
@@ -29,16 +29,13 @@
             android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_play_arrow_black_36dp"/>
+            android:src="@drawable/ic_play_arrow_black_36dp"
+            android:id="@+id/button_timer_left"/>
         <ImageButton
             android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_stop_black_36dp"/>
-        <ImageButton
-            android:background="@null"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit_black_36dp"/>
+            android:src="@drawable/ic_edit_black_36dp"
+            android:id="@+id/button_timer_right"/>
     </LinearLayout>
 </LinearLayout>
