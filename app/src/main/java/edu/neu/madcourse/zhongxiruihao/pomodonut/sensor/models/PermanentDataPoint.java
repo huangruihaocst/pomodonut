@@ -11,8 +11,7 @@ public class PermanentDataPoint extends SugarRecord {
     public long time;
     public double accelerationData;
 
-    public PermanentDataPoint(){
-    }
+    public PermanentDataPoint() {}
 
     public PermanentDataPoint(long time, double accelerationData){
         this.time=time;
