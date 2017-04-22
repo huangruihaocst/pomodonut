@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Event;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.utils.Utils;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -54,6 +56,10 @@ public class CountdownTimersFragment extends Fragment {
             for (int i = 0; i < timers.length; ++i) {
                 if (i >= count) {
                     timers[i].setVisibility(View.GONE);
+                } else {
+                    ((TextView) timers[i].findViewById(R.id.text_timer_title)).setText(events[i].name);
+                    ((TextView) timers[i].findViewById(R.id.text_timer_time))
+                            .setText(Utils.formatMillisecond(events[i].time));
                 }
             }
         } else {  // disable all
