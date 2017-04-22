@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 // don't show this page
                 break;
             }
-            fragments.add(CountdownTimersFragment.newInstance(eventsCurrentPage));
+            fragments.add(CountdownTimersFragment.newInstance(eventsCurrentPage, i));
         }
         viewPager.setAdapter(new CountdownTimersPagerAdapter(getSupportFragmentManager(), fragments));
 
