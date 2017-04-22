@@ -3,6 +3,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="action_day_view">Day View</string>
     <string name="title_activity_day_view">DayViewActivity</string>
+    <string name="title_activity_speech">SpeechActivity</string>
     <string name="text_accelerometer_data">Accel Data</string>
     <string name="tap_on_mic">Tap on mic to speak</string>
     <string name="speech_prompt">Say something&#8230;</string>
