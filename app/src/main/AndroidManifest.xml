@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.neu.madcourse.zhongxiruihao.pomodonut">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,10 +16,23 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".voiceRecognition.SpeechActivity"
+            android:label="@string/title_activity_speech"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+
+        <activity
+            android:name=".dayview.DayViewActivity"
+            android:label="@string/title_activity_day_view"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+
 
         <meta-data android:name="DATABASE" android:value="pomodonut.db" />
         <meta-data android:name="VERSION" android:value="2" />
@@ -28,10 +43,6 @@
         <service android:name=".sensor.RecordAccelService"/>
 
 
-        <activity
-            android:name=".dayview.DayViewActivity"
-            android:label="@string/title_activity_day_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

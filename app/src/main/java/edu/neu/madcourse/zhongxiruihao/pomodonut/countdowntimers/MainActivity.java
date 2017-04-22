@@ -23,6 +23,7 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Event;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.dayview.DayViewActivity;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.AccelProcessService;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.RecordAccelService;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.voiceRecognition.SpeechActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -111,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_day_view:
                 startActivity(new Intent(MainActivity.this, DayViewActivity.class));
+                return true;
+            case R.id.action_speech_recognition:
+                startActivity(new Intent(MainActivity.this, SpeechActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
