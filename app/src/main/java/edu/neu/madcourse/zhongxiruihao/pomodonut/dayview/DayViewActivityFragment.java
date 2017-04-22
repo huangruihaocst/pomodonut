@@ -28,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.TimeZone;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
@@ -106,6 +107,7 @@ public class DayViewActivityFragment extends Fragment {
         int recordFrequency = getContext().getResources().getInteger(R.integer.record_accel_frequency);
         int recordPerDay = SECONDS_PER_DAY / recordFrequency;
 
+        // get the unix time of local start time and end time of a day
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
                 Locale.getDefault());
         String dateString = String.format(Locale.US, "%04d", year) + "-"
@@ -129,6 +131,7 @@ public class DayViewActivityFragment extends Fragment {
             e.printStackTrace();
         }
 
+        // find accel data in the database whose time is between the above two unix time
         List<PermanentDataPoint> permanentDataPointList = PermanentDataPoint
                 .findWithQuery(PermanentDataPoint.class,
                         "select * from PERMANENT_DATA_POINT where time >= ? and time < ?",
@@ -145,28 +148,13 @@ public class DayViewActivityFragment extends Fragment {
                 lineEntries.set(index, new Entry(index, (float) permanentDataPoint.accelerationData));
             }
         }
-        LineDataSet lineDataSet = new LineDataSet(lineEntries, "accel data");
-        lineDataSet.setLineWidth(0.1f);
-        lineDataSet.setDrawValues(false);
-        lineDataSet.setDrawCircles(false);
-        // style line data set here
+
+        LineDataSet lineDataSet = new LineDataSet(lineEntries, "Accel Data");
+        setLineDataSetStyle(lineDataSet);
         LineData lineData = new LineData(lineDataSet);
+        setLineChartAxisStyle(lineChart);
         lineChart.setData(lineData);
-        lineChart.setScaleEnabled(false);
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setDrawLabels(false);
-        xAxis.setEnabled(false);
-        YAxis yAxis = lineChart.getAxisLeft();
-        yAxis.setAxisMaximum(20);
-        yAxis.setAxisMinimum(0);
-        yAxis.setDrawLabels(false);
-        yAxis = lineChart.getAxisRight();
-        yAxis.setAxisMaximum(10);
-        yAxis.setAxisMinimum(0);
-        yAxis.setDrawLabels(false);
-        lineChart.setDrawGridBackground(false);
-        lineChart.getLegend().setEnabled(false);
-        lineChart.getDescription().setEnabled(false);
+        setLineChartStyle(lineChart);
         lineChart.invalidate();
     }
 
@@ -188,5 +176,32 @@ public class DayViewActivityFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void setLineDataSetStyle(LineDataSet dataSet) {
+        dataSet.setLineWidth(0.1f);
+        dataSet.setDrawValues(false);
+        dataSet.setDrawCircles(false);
+    }
+
+    private void setLineChartStyle(LineChart chart) {
+        chart.setScaleEnabled(false);
+        chart.setDrawGridBackground(false);
+        chart.getLegend().setEnabled(false);
+        chart.getDescription().setEnabled(false);
+    }
+
+    private void setLineChartAxisStyle(LineChart chart) {
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setDrawLabels(false);
+        xAxis.setEnabled(false);
+        YAxis yAxis = chart.getAxisLeft();
+        yAxis.setAxisMaximum(10);
+        yAxis.setAxisMinimum(0);
+        yAxis.setDrawLabels(false);
+        yAxis = chart.getAxisRight();
+        yAxis.setAxisMaximum(10);
+        yAxis.setAxisMinimum(0);
+        yAxis.setDrawLabels(false);
     }
 }
