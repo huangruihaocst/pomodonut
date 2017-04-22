@@ -1,4 +1,4 @@
-package edu.neu.madcourse.zhongxiruihao.pomodonut.notification;
+package edu.neu.madcourse.zhongxiruihao.pomodonut.notifications;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;

@@ -8,16 +8,16 @@
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="00:00"
         android:textAlignment="center"
-        android:textSize="30sp"/>
+        android:textSize="30sp"
+        android:id="@+id/text_timer_time"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title"
         android:textAlignment="center"
-        android:textSize="30sp"/>
+        android:textSize="30sp"
+        android:id="@+id/text_timer_title"/>
 
     <LinearLayout
         android:gravity="center"
