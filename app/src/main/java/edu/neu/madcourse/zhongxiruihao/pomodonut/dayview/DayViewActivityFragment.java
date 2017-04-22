@@ -28,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.TimeZone;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
@@ -107,48 +108,54 @@ public class DayViewActivityFragment extends Fragment {
 
     // year, month, date in current timezone
     private void setLineChart(LineChart lineChart, int year, int month, int date) {
-        int recordFrequency = getContext().getResources().getInteger(R.integer.record_accel_frequency);
-        int recordPerDay = SECONDS_PER_DAY / recordFrequency;
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
-                Locale.getDefault());
-        String dateString = String.format(Locale.US, "%04d", year) + "-"
-                + String.format(Locale.US, "%2d", month) + "-"
-                + String.format(Locale.US, "%2d", date) + "T"
-                + "00:00:00Z";
-        long startUnix = 0, endUnix = 0;
-        try {
-            Date d = simpleDateFormat.parse(dateString);
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            startUnix = d.getTime();
-            dateString = String.format(Locale.US, "%04d", year) + "-"
-                    + String.format(Locale.US, "%2d", month) + "-"
-                    + String.format(Locale.US, "%2d", date) + "T"
-                    + "23:59:59Z";
-            simpleDateFormat.setTimeZone(TimeZone.getDefault());
-            d = simpleDateFormat.parse(dateString);
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            endUnix = d.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        List<PermanentDataPoint> permanentDataPointList = PermanentDataPoint
-                .findWithQuery(PermanentDataPoint.class,
-                        "select * from PERMANENT_DATA_POINT where time >= ? and time < ?",
-                        String.valueOf(startUnix), String.valueOf(endUnix));
-
+//        int recordFrequency = getContext().getResources().getInteger(R.integer.record_accel_frequency);
+//        int recordPerDay = SECONDS_PER_DAY / recordFrequency;
+//
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
+//                Locale.getDefault());
+//        String dateString = String.format(Locale.US, "%04d", year) + "-"
+//                + String.format(Locale.US, "%2d", month) + "-"
+//                + String.format(Locale.US, "%2d", date) + "T"
+//                + "00:00:00Z";
+//        long startUnix = 0, endUnix = 0;
+//        try {
+//            Date d = simpleDateFormat.parse(dateString);
+//            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//            startUnix = d.getTime();
+//            dateString = String.format(Locale.US, "%04d", year) + "-"
+//                    + String.format(Locale.US, "%2d", month) + "-"
+//                    + String.format(Locale.US, "%2d", date) + "T"
+//                    + "23:59:59Z";
+//            simpleDateFormat.setTimeZone(TimeZone.getDefault());
+//            d = simpleDateFormat.parse(dateString);
+//            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//            endUnix = d.getTime();
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        List<PermanentDataPoint> permanentDataPointList = PermanentDataPoint
+//                .findWithQuery(PermanentDataPoint.class,
+//                        "select * from PERMANENT_DATA_POINT where time >= ? and time < ?",
+//                        String.valueOf(startUnix), String.valueOf(endUnix));
+//
+//        List<Entry> lineEntries = new ArrayList<>();
+//        for (int i = 0; i < recordPerDay; ++i) {
+//            lineEntries.add(new Entry(i, 0));
+//        }
+//        for (PermanentDataPoint permanentDataPoint: permanentDataPointList) {
+//            if (permanentDataPoint.accelerationData != 0) {
+//                double portion = (double) (permanentDataPoint.time - startUnix) / (endUnix - startUnix);
+//                int index = (int) (portion * recordPerDay);
+//                lineEntries.set(index, new Entry(index, (float) permanentDataPoint.accelerationData));
+//            }
+//        }
+        Random random = new Random();
         List<Entry> lineEntries = new ArrayList<>();
-        for (int i = 0; i < recordPerDay; ++i) {
-            lineEntries.add(new Entry(i, 0));
+        for (int i = 0; i < 240; ++i) {
+            lineEntries.add(new Entry(i, random.nextFloat() * 10));
         }
-        for (PermanentDataPoint permanentDataPoint: permanentDataPointList) {
-            if (permanentDataPoint.accelerationData != 0) {
-                double portion = (double) (permanentDataPoint.time - startUnix) / (endUnix - startUnix);
-                int index = (int) (portion * recordPerDay);
-                lineEntries.set(index, new Entry(index, (float) permanentDataPoint.accelerationData));
-            }
-        }
+
         LineDataSet lineDataSet = new LineDataSet(lineEntries, "accel data");
         lineDataSet.setLineWidth(0.1f);
         lineDataSet.setDrawValues(false);
@@ -161,7 +168,7 @@ public class DayViewActivityFragment extends Fragment {
         xAxis.setDrawLabels(false);
         xAxis.setEnabled(false);
         YAxis yAxis = lineChart.getAxisLeft();
-        yAxis.setAxisMaximum(20);
+        yAxis.setAxisMaximum(10);
         yAxis.setAxisMinimum(0);
         yAxis.setDrawLabels(false);
         yAxis = lineChart.getAxisRight();
