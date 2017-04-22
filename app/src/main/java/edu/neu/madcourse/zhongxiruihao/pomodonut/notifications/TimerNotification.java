@@ -28,7 +28,7 @@ public class TimerNotification {
         builder=new NotificationCompat.Builder(context);
         builder.setContentText(text);
         builder.setContentTitle(title);
-        builder.setSmallIcon(R.drawable.ic_timer);
+        builder.setSmallIcon(R.drawable.ic_timer_white_36dp);
         builder.setAutoCancel(false);
         builder.setOngoing(true);
         builder.setOnlyAlertOnce(true);
