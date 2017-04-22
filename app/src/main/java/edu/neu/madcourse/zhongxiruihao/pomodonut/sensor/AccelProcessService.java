@@ -22,7 +22,7 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.models.TemporaryDataPoin
  */
 
 public class AccelProcessService extends Service {
-    public static final int INTERVAL=60000;
+    public static final int INTERVAL=3000;
     CountDownTimer timer;
     private final Service thisService=this;
     private SharedPreferences preferences;
