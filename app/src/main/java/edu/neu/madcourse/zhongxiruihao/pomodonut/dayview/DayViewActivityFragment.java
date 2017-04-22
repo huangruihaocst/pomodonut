@@ -55,11 +55,7 @@ public class DayViewActivityFragment extends Fragment {
         SugarContext.init(getActivity());
     }
 
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        SugarContext.terminate();
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
