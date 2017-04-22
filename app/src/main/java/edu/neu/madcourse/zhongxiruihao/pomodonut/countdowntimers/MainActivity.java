@@ -1,16 +1,11 @@
 package edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers;
 
 import android.app.ActivityManager;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,15 +15,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Event;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.dayview.DayViewActivity;
-import edu.neu.madcourse.zhongxiruihao.pomodonut.notification.TimerNotification;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.AccelProcessService;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.RecordAccelService;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int NUM_PAGES = 4;
+    public static final int TIMERS_PER_PAGE = 6;
 
     private ViewPager viewPager;
 
@@ -51,12 +50,24 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        CountdownTimersFragment[] fragments = new CountdownTimersFragment[NUM_PAGES];
+        ArrayList<CountdownTimersFragment> fragments = new ArrayList<>();
+        Event[] events = getEvents();  // events that are going to show on the main screen
+        // TODO: handle scenario when events.length == 0
         for (int i = 0; i < NUM_PAGES; ++i) {
-            fragments[i] = new CountdownTimersFragment();
+            Event[] eventsCurrentPage;
+            if (i < events.length / TIMERS_PER_PAGE) {
+                eventsCurrentPage = Arrays.copyOfRange(events,
+                        i * TIMERS_PER_PAGE, (i + 1) * TIMERS_PER_PAGE);
+            } else if (i == events.length / TIMERS_PER_PAGE) {
+                eventsCurrentPage = Arrays.copyOfRange(events,
+                        i * TIMERS_PER_PAGE, events.length);
+            } else {
+                // don't show this page
+                break;
+            }
+            fragments.add(CountdownTimersFragment.newInstance(eventsCurrentPage));
         }
-        viewPager.setAdapter(new CountdownTimersPagerAdapter(getSupportFragmentManager(),
-                NUM_PAGES, fragments));
+        viewPager.setAdapter(new CountdownTimersPagerAdapter(getSupportFragmentManager(), fragments));
 
         preferences= PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
@@ -133,6 +144,16 @@ public class MainActivity extends AppCompatActivity {
     public void stopSensorServices(View view){
         stopService(new Intent(getBaseContext(),RecordAccelService.class));
         stopService(new Intent(getBaseContext(),AccelProcessService.class));
+    }
+
+    private Event[] getEvents() {
+        // TODO: read database and get real events
+        final int COUNT = 16;
+        Event[] events = new Event[COUNT];
+        for (int i = 0;i < COUNT; ++i) {
+            events[i] = new Event("Event" + i, i * 1000);
+        }
+        return events;
     }
 
 }
