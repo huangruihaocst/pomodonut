@@ -17,4 +17,13 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="TimeScaleText" parent="Base.TextAppearance.AppCompat">
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="textSize">@dimen/time_picker_text_size</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
 </resources>

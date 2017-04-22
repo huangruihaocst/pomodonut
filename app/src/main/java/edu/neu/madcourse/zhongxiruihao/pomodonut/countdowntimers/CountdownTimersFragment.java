@@ -1,10 +1,8 @@
 package edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.support.annotation.ColorRes;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +16,7 @@ import java.util.ArrayList;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Event;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.editevent.EditEventActivity;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.utils.Utils;
 
 /**
@@ -86,6 +85,14 @@ public class CountdownTimersFragment extends Fragment {
                 timer.setVisibility(View.GONE);
             }
         }
+
+        root.findViewById(R.id.button_timer_right).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), EditEventActivity.class));
+            }
+        });
+
         return root;
     }
 }
