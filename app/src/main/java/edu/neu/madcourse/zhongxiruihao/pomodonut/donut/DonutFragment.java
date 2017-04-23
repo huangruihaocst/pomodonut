@@ -101,7 +101,7 @@ public class DonutFragment extends Fragment {
         //description.setText("Test");
         //description.setPosition(200,160);
         //pieChart.setDescription(description);
-        pieChart.setRotationEnabled(false);
+        //pieChart.setRotationEnabled(false);
 
         Legend l = pieChart.getLegend();
         l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
