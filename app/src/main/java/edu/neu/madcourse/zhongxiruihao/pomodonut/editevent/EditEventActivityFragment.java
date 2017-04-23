@@ -61,6 +61,8 @@ public class EditEventActivityFragment extends Fragment {
         }
         hoursPicker.setDisplayedValues(hours);
         hoursPicker.setWrapSelectorWheel(false);
+        hoursPicker.setMinValue(0);
+        hoursPicker.setMaxValue(maxHour);
         hoursPicker.setValue(0);
 
         return root;

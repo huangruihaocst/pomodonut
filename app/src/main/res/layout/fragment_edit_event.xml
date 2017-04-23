@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="edu.neu.madcourse.zhongxiruihao.pomodonut.editevent.EditEventActivityFragment"
-    tools:showIn="@layout/activity_edit_event"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -22,6 +21,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
         <EditText
+            android:layout_marginLeft="@dimen/event_name_setter_margin_left"
+            android:layout_marginStart="@dimen/event_name_setter_margin_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/edit_event_text_size"
@@ -33,61 +34,60 @@
             android:id="@+id/edit_event_name"/>
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/event_time_setter_margin_top">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_event_time"
             android:textSize="@dimen/edit_event_text_size"
-            android:id="@+id/text_event_time"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:id="@+id/text_event_time"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
             <NumberPicker
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
                 android:id="@+id/picker_hours"
-                android:layout_toRightOf="@+id/text_event_time"
-                android:layout_toEndOf="@+id/text_event_time">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             </NumberPicker>
+
             <TextView
-                style="@style/TimeScaleText"
-                android:text="@string/text_hours"
                 android:id="@+id/text_hours"
-                android:layout_toRightOf="@+id/picker_hours"
-                android:layout_toEndOf="@+id/picker_hours">
-            </TextView>
-            <NumberPicker
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:id="@+id/picker_minutes"
-                android:layout_toRightOf="@id/text_hours"
-                android:layout_toEndOf="@id/text_hours">
-            </NumberPicker>
-            <TextView
                 style="@style/TimeScaleText"
-                android:text="@string/text_minutes"
-                android:id="@+id/text_minutes"
-                android:layout_toRightOf="@+id/picker_minutes"
-                android:layout_toEndOf="@+id/picker_minutes">
-            </TextView>
-            <NumberPicker
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_toRightOf="@+id/text_minutes"
-                android:layout_toEndOf="@id/text_minutes"
-                android:id="@+id/picker_seconds">
-            </NumberPicker>
-            <TextView
-                style="@style/TimeScaleText"
-                android:text="@string/text_seconds"
-                android:id="@+id/text_seconds"
-                android:layout_toRightOf="@+id/picker_seconds"
-                android:layout_toEndOf="@id/picker_seconds">
+                android:text="@string/text_hours">
             </TextView>
 
-    </RelativeLayout>
+            <NumberPicker
+                android:id="@+id/picker_minutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </NumberPicker>
+
+            <TextView
+                android:id="@+id/text_minutes"
+                style="@style/TimeScaleText"
+                android:text="@string/text_minutes">
+            </TextView>
+
+            <NumberPicker
+                android:id="@+id/picker_seconds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </NumberPicker>
+
+            <TextView
+                android:id="@+id/text_seconds"
+                style="@style/TimeScaleText"
+                android:text="@string/text_seconds">
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

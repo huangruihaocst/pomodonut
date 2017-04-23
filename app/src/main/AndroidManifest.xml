@@ -23,11 +23,13 @@
         <activity
             android:name=".voiceRecognition.SpeechActivity"
             android:label="@string/title_activity_speech"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".dayview.DayViewActivity"
             android:label="@string/title_activity_day_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <meta-data
             android:name="DATABASE"
@@ -48,7 +50,8 @@
         <activity
             android:name=".editevent.EditEventActivity"
             android:label="@string/title_activity_edit_event"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

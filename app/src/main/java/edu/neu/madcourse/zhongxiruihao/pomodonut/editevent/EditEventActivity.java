@@ -28,11 +28,11 @@ public class EditEventActivity extends AppCompatActivity {
         String eventName = data.getString(CountdownTimersFragment.EVENT_NAME_BUNDLE_KEY);
         long eventTime = data.getLong(CountdownTimersFragment.EVENT_TIME_BUNDLE_KEY);
 
-        FragmentManager manager = getSupportFragmentManager();
-        EditEventActivityFragment fragment = (EditEventActivityFragment) manager.findFragmentById(R.id.edit_event_fragment);
-        fragment.setEvent(eventName, eventTime);
-
-
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        EditEventActivityFragment fragment = EditEventActivityFragment.newInstance(eventName, eventTime);
+        fragmentTransaction.add(R.id.container_edit_event, fragment);
+        fragmentTransaction.commit();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {

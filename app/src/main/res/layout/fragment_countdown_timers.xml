@@ -7,7 +7,7 @@
     android:useDefaultMargins="true"
     tools:context="edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.CountdownTimersFragment"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/content_main">
+    tools:showIn="@layout/content_countdown_timers">
 
     <include layout="@layout/countdown_timer"
         android:layout_width="wrap_content"
