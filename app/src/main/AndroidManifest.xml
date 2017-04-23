@@ -14,11 +14,7 @@
             android:name=".countdowntimers.CountdownTimersActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".voiceRecognition.SpeechActivity"
@@ -30,6 +26,24 @@
             android:label="@string/title_activity_day_view"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+        <activity
+            android:name=".editevent.EditEventActivity"
+            android:label="@string/title_activity_edit_event"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+
+        <activity android:name=".donut.ActivityDonut"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
 
         <meta-data
             android:name="DATABASE"
@@ -47,11 +61,6 @@
         <service android:name=".sensor.AccelProcessService" />
         <service android:name=".sensor.RecordAccelService" />
 
-        <activity
-            android:name=".editevent.EditEventActivity"
-            android:label="@string/title_activity_edit_event"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
     </application>
 
 </manifest>
