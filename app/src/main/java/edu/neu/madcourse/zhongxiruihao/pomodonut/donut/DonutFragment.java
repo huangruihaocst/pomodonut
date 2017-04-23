@@ -1,26 +1,22 @@
 package edu.neu.madcourse.zhongxiruihao.pomodonut.donut;
 
-import android.app.Fragment;
-import android.app.ProgressDialog;
+import android.support.v4.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.donut.DonutActivity.viewType;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
 
@@ -28,7 +24,16 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
  * Created by Ben_Big on 4/23/17.
  */
 
-public class FragmentDonut extends Fragment {
+public class DonutFragment extends Fragment {
+    private int differenceFromCurrentTime;
+    private viewType type;
+
+    public void init(int difference, viewType type){
+        this.differenceFromCurrentTime=difference;
+        this.type=type;
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
