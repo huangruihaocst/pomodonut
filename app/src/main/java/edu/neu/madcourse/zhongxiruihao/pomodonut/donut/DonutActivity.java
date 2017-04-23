@@ -14,7 +14,7 @@ import android.view.MenuItem;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.dayview.DayViewActivity;
-import edu.neu.madcourse.zhongxiruihao.pomodonut.voiceRecognition.SpeechActivity;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.voicerecognition.SpeechActivity;
 
 /**
  * Created by Ben_Big on 4/23/17.
