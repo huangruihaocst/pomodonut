@@ -16,4 +16,5 @@
     <string name="text_hours">HRS</string>
     <string name="text_minutes">MINS</string>
     <string name="text_seconds">SEC</string>
+    <string name="action_save">DONE</string>
 </resources>

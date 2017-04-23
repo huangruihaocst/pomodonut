@@ -2,4 +2,5 @@
 <resources>
     <!--1 minute-->
     <integer name="record_accel_frequency">15</integer>
+    <integer name="hours_picker_max_hour">12</integer>
 </resources>

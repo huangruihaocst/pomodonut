@@ -25,7 +25,7 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.AccelProcessService;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.RecordAccelService;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.voiceRecognition.SpeechActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class CountdownTimersActivity extends AppCompatActivity {
 
     private static final int NUM_PAGES = 4;
     public static final int TIMERS_PER_PAGE = 6;
@@ -70,14 +70,14 @@ public class MainActivity extends AppCompatActivity {
         }
         viewPager.setAdapter(new CountdownTimersPagerAdapter(getSupportFragmentManager(), fragments));
 
-        preferences= PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         startSensorServices();
 
 
         /*
         final TimerNotification timerNotification=new TimerNotification((NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE));
-        Intent intent=new Intent(this,MainActivity.class);
+        Intent intent=new Intent(this,CountdownTimersActivity.class);
         timerNotification.makeNotification(this,intent,"Test","Another test");
 
         CountDownTimer timer=new CountDownTimer(1000*15,1000) {
@@ -111,10 +111,10 @@ public class MainActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_day_view:
-                startActivity(new Intent(MainActivity.this, DayViewActivity.class));
+                startActivity(new Intent(CountdownTimersActivity.this, DayViewActivity.class));
                 return true;
             case R.id.action_speech_recognition:
-                startActivity(new Intent(MainActivity.this, SpeechActivity.class));
+                startActivity(new Intent(CountdownTimersActivity.this, SpeechActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

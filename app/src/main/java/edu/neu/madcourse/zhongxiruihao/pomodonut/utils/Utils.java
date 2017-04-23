@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Utils {
 
     //  TODO: finish this method
-    //  format: xx:xx
+    //  format: xx:xx:xx
     public static String formatMillisecond(long ms) {
         return ms + "";
     }

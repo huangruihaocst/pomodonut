@@ -50,8 +50,6 @@ public class DayViewActivityFragment extends Fragment {
         SugarContext.init(getActivity());
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

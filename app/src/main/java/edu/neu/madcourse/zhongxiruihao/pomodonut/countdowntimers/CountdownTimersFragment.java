@@ -5,12 +5,10 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -24,8 +22,11 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.utils.Utils;
  */
 public class CountdownTimersFragment extends Fragment {
 
-    private static final String EVENTS_BUNDLE_KEY = "events bundle key";
-    private static final String PAGE_BUNDLE_KEY = "page bundle key";
+    private static final String EVENTS_ARGS_KEY = "events args key";
+    private static final String PAGE_ARGS_KEY = "page args key";
+
+    public static final String EVENT_NAME_BUNDLE_KEY = "event name bundle key";
+    public static final String EVENT_TIME_BUNDLE_KEY = "event time bundle key";
 
     private Event[] events;
     public int page;  // page index
@@ -38,8 +39,8 @@ public class CountdownTimersFragment extends Fragment {
     public static CountdownTimersFragment newInstance(Event[] events, int page) {
         CountdownTimersFragment fragment = new CountdownTimersFragment();
         Bundle args = new Bundle();
-        args.putSerializable(EVENTS_BUNDLE_KEY ,events);
-        args.putInt(PAGE_BUNDLE_KEY, page);
+        args.putSerializable(EVENTS_ARGS_KEY,events);
+        args.putInt(PAGE_ARGS_KEY, page);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,8 +49,8 @@ public class CountdownTimersFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            events = (Event[]) getArguments().getSerializable(EVENTS_BUNDLE_KEY);
-            page = getArguments().getInt(PAGE_BUNDLE_KEY);
+            events = (Event[]) getArguments().getSerializable(EVENTS_ARGS_KEY);
+            page = getArguments().getInt(PAGE_ARGS_KEY);
         }
     }
 
@@ -57,7 +58,7 @@ public class CountdownTimersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_countdown_timers, container, false);
-        View[] timers = new View[MainActivity.TIMERS_PER_PAGE];
+        View[] timers = new View[CountdownTimersActivity.TIMERS_PER_PAGE];
         for (int i = 0; i < timers.length; ++i) {
             timers[i] = root.findViewById(timerIds[i]);
         }
@@ -74,10 +75,23 @@ public class CountdownTimersFragment extends Fragment {
                     LayerDrawable timerBackground = (LayerDrawable) timers[i].getBackground();
                     GradientDrawable circle = (GradientDrawable) timerBackground.findDrawableByLayerId(R.id.background_circle);
                     circle.setStroke(Utils.dpToPx(getContext(), 2),
-                            colors.get(page * MainActivity.TIMERS_PER_PAGE + i));
+                            colors.get(page * CountdownTimersActivity.TIMERS_PER_PAGE + i));
                     GradientDrawable line = (GradientDrawable) timerBackground.findDrawableByLayerId(R.id.background_line);
                     line.setStroke(Utils.dpToPx(getContext(), 1),
-                            colors.get(page * MainActivity.TIMERS_PER_PAGE + i));
+                            colors.get(page * CountdownTimersActivity.TIMERS_PER_PAGE + i));
+                    final String eventName = events[i].name;
+                    final long eventTime = events[i].time;
+                    timers[i].findViewById(R.id.button_timer_right).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle data = new Bundle();
+                            data.putString(EVENT_NAME_BUNDLE_KEY, eventName);
+                            data.putLong(EVENT_TIME_BUNDLE_KEY, eventTime);
+                            Intent intent = new Intent(getActivity(), EditEventActivity.class);
+                            intent.putExtras(data);
+                            startActivity(intent);
+                        }
+                    });
                 }
             }
         } else {  // disable all
@@ -85,13 +99,6 @@ public class CountdownTimersFragment extends Fragment {
                 timer.setVisibility(View.GONE);
             }
         }
-
-        root.findViewById(R.id.button_timer_right).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), EditEventActivity.class));
-            }
-        });
 
         return root;
     }
