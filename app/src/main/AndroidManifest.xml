@@ -42,7 +42,8 @@
 
 
         <activity android:name=".donut.DonutActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
         </activity>
 
 
