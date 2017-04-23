@@ -18,6 +18,9 @@ public class EditEventActivityFragment extends Fragment {
     private static final String EVENT_NAME_ARGS_KEY = "event name args key";
     private static final String EVENT_TIME_ARGS_KEY = "event time args key";
 
+    private static final int MINUTES_PER_HOUR = 60;
+    private static final int SECONDS_PER_MINUTE = 60;
+
     private String eventName;
     private long eventTime;
 
@@ -54,22 +57,23 @@ public class EditEventActivityFragment extends Fragment {
         NumberPicker minutesPicker = (NumberPicker) root.findViewById(R.id.picker_minutes);
         NumberPicker secondsPicker = (NumberPicker) root.findViewById(R.id.picker_seconds);
 
-        int maxHour = getResources().getInteger(R.integer.hours_picker_max_hour);
-        String[] hours = new String[maxHour + 1];
-        for (int i = 0; i < maxHour + 1; ++i) {
-            hours[i] = String.valueOf(i);
-        }
-        hoursPicker.setDisplayedValues(hours);
-        hoursPicker.setWrapSelectorWheel(false);
-        hoursPicker.setMinValue(0);
-        hoursPicker.setMaxValue(maxHour);
-        hoursPicker.setValue(0);
+        setPicker(hoursPicker, getResources().getInteger(R.integer.hours_picker_max_hour), false);
+        setPicker(minutesPicker, MINUTES_PER_HOUR, true);
+        setPicker(secondsPicker, SECONDS_PER_MINUTE, true);
 
         return root;
     }
 
-    void setEvent(String eventName, long eventTime) {
-        this.eventName = eventName;
-        this.eventTime = eventTime;
+    private void setPicker(NumberPicker picker, int maxValue, boolean allowWrapSelectorWheel) {
+        String[] hours = new String[maxValue + 1];
+        for (int i = 0; i < maxValue + 1; ++i) {
+            hours[i] = String.valueOf(i);
+        }
+        picker.setDisplayedValues(hours);
+        picker.setWrapSelectorWheel(allowWrapSelectorWheel);
+        picker.setMinValue(0);
+        picker.setMaxValue(maxValue);
+        picker.setValue(0);
     }
+
 }

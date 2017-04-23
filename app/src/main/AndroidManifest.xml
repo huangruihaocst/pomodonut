@@ -22,7 +22,7 @@
 
         </activity>
         <activity
-            android:name=".voiceRecognition.SpeechActivity"
+            android:name=".voicerecognition.SpeechActivity"
             android:label="@string/title_activity_speech"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">

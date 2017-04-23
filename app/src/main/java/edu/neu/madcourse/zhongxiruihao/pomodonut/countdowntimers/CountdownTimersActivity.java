@@ -24,7 +24,7 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.dayview.DayViewActivity;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.donut.DonutActivity;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.AccelProcessService;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.RecordAccelService;
-import edu.neu.madcourse.zhongxiruihao.pomodonut.voiceRecognition.SpeechActivity;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.voicerecognition.SpeechActivity;
 
 public class CountdownTimersActivity extends AppCompatActivity {
 

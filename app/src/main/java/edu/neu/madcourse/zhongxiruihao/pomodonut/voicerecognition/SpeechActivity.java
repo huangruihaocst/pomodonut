@@ -1,4 +1,4 @@
-package edu.neu.madcourse.zhongxiruihao.pomodonut.voiceRecognition;
+package edu.neu.madcourse.zhongxiruihao.pomodonut.voicerecognition;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
