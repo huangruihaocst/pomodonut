@@ -23,7 +23,7 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Event;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.dayview.DayViewActivity;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.AccelProcessService;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.RecordAccelService;
-import edu.neu.madcourse.zhongxiruihao.pomodonut.voiceRecognition.SpeechActivity;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.voicerecognition.SpeechActivity;
 
 public class CountdownTimersActivity extends AppCompatActivity {
 
