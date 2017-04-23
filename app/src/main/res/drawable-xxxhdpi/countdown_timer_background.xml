@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/background_circle">
+        <shape
+            android:shape="oval">
+            <stroke
+                android:width="2dp"
+                android:color="#0000FF"/>
+            <size
+                android:width="180dp"
+                android:height="180dp"/>
+        </shape>
+    </item>
+    <item
+        android:top="35dp"
+        android:left="20dp"
+        android:right="20dp"
+        android:id="@+id/background_line">
+        <shape
+            android:shape="line">
+            <stroke
+                android:width="1dp"
+                android:color="#0000FF"/>
+        </shape>
+    </item>
+</layer-list>
