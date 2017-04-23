@@ -60,7 +60,7 @@ public class AccelProcessService extends Service {
                     calAverage(points,currentTime);
 
 
-                    Toast.makeText(thisService, "" + points.size(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(thisService, "" + points.size(), Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception exception){
                     Toast.makeText(thisService, "No such table",Toast.LENGTH_SHORT).show();
