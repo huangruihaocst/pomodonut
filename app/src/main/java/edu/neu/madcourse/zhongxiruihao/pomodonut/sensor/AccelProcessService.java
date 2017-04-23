@@ -70,7 +70,6 @@ public class AccelProcessService extends Service {
                     Toast.makeText(thisService, "" + points.size(), Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception exception){
-                    Log.d("abc",exception.toString());
                     Toast.makeText(thisService, "No such table",Toast.LENGTH_SHORT).show();
                 }
             }
@@ -101,7 +100,7 @@ public class AccelProcessService extends Service {
     public void calAverage(List<TemporaryDataPoint> points, long currentTime){
 
         if (points.size()==0){
-            PermanentDataPoint newPoint =new PermanentDataPoint(currentTime-AccelProcessService.INTERVAL,Math.random()*(1.5));
+            PermanentDataPoint newPoint =new PermanentDataPoint(currentTime-AccelProcessService.INTERVAL,Math.random()*0.5);
             newPoint.save();
             return;
         }
