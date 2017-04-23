@@ -21,6 +21,7 @@ import java.util.Arrays;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Event;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.dayview.DayViewActivity;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.donut.DonutActivity;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.AccelProcessService;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.RecordAccelService;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.voicerecognition.SpeechActivity;
@@ -116,6 +117,9 @@ public class CountdownTimersActivity extends AppCompatActivity {
             case R.id.action_speech_recognition:
                 startActivity(new Intent(CountdownTimersActivity.this, SpeechActivity.class));
                 return true;
+            case R.id.action_donut:
+                startActivity(new Intent(CountdownTimersActivity.this, DonutActivity.class));
+
             default:
                 return super.onOptionsItemSelected(item);
         }

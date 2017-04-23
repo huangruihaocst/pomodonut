@@ -19,6 +19,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".voicerecognition.SpeechActivity"
@@ -32,6 +33,19 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity
+            android:name=".editevent.EditEventActivity"
+            android:label="@string/title_activity_edit_event"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+
+        <activity android:name=".donut.DonutActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+
 
         <meta-data
             android:name="DATABASE"
@@ -49,11 +63,6 @@
         <service android:name=".sensor.AccelProcessService" />
         <service android:name=".sensor.RecordAccelService" />
 
-        <activity
-            android:name=".editevent.EditEventActivity"
-            android:label="@string/title_activity_edit_event"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
     </application>
 
 </manifest>
