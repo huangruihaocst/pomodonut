@@ -55,16 +55,9 @@ public class AccelProcessService extends Service {
                             "" + currentTime
                     );
 
+                    TemporaryDataPoint.deleteAll(TemporaryDataPoint.class);
 
                     calAverage(points,currentTime);
-
-                    /*
-                    for (PermanentDataPoint point : listOfPoints){
-                        try {
-                            point.save();
-                        }
-                        catch (Exception e){}
-                    }*/
 
 
                     Toast.makeText(thisService, "" + points.size(), Toast.LENGTH_SHORT).show();
@@ -100,20 +93,26 @@ public class AccelProcessService extends Service {
     public void calAverage(List<TemporaryDataPoint> points, long currentTime){
 
         if (points.size()==0){
-            PermanentDataPoint newPoint =new PermanentDataPoint(currentTime-AccelProcessService.INTERVAL,Math.random()*0.5);
-            newPoint.save();
+            if (Math.random()>0.5) {
+                PermanentDataPoint newPoint = new PermanentDataPoint(currentTime - AccelProcessService.INTERVAL, Math.random() * 0.3);
+                newPoint.save();
+            }
             return;
         }
-
 
         int currentStartingPoint=0;
         int currentSize=1;
         double cumulativeSum=points.get(currentStartingPoint).accelerationData;
+        int pointsSize=points.size();
 
-        for (int i=0;i<points.size();i++){
 
-            TemporaryDataPoint point=points.get(i);
-            point.delete();
+        for (int i=0;i<pointsSize;i++){
+
+
+            if (pointsSize>330){
+                if (Math.random()>0.5) continue;
+            }
+
 
             if (i==currentStartingPoint) continue;
             if ((points.get(i).time-points.get(currentStartingPoint).time)>AccelProcessService.INTERVAL){
