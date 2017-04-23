@@ -18,4 +18,5 @@
     <string name="text_minutes">MINS</string>
     <string name="text_seconds">SEC</string>
     <string name="action_save">DONE</string>
+    <string name="action_edit_event">EDIT</string>
 </resources>
