@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -16,6 +17,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.donut.DonutActivity.viewType;
 
@@ -28,6 +31,7 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
 public class DonutFragment extends Fragment {
     private int differenceFromCurrentTime;
     private viewType type;
+    private ArrayList<Integer> colors;
 
     public void init(int difference, viewType type){
         this.differenceFromCurrentTime=difference;
@@ -38,6 +42,20 @@ public class DonutFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        ArrayList<Integer> colors = new ArrayList<>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
     }
 
     @Override
@@ -51,6 +69,9 @@ public class DonutFragment extends Fragment {
     }
 
     private void initPieChart(PieChart pieChart){
+
+        Toast.makeText(getActivity(), getCurrentday(), Toast.LENGTH_SHORT).show();
+
         List<PieEntry> yvalues = new ArrayList<PieEntry>();
         yvalues.add(new PieEntry(8f, "Jan"));
         yvalues.add(new PieEntry(15f, "Feb"));
@@ -67,28 +88,7 @@ public class DonutFragment extends Fragment {
 
         PieDataSet dataSet = new PieDataSet(yvalues, "");
 
-
-
-        ArrayList<Integer> colors = new ArrayList<>();
-
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.JOYFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
-
         dataSet.setColors(colors);
-
-
 
 
         PieData data = new PieData(dataSet);
@@ -114,10 +114,23 @@ public class DonutFragment extends Fragment {
         //l.setXEntrySpace(7);
         //l.setYEntrySpace(5);
 
+    }
 
 
+    private String getCurrentday(){
+        /*
+        Calendar cal= Calendar.getInstance();
+        int dayOfMonth=cal.get(Calendar.DAY_OF_MONTH);
+        int monthOfYear=cal.get(Calendar.MONTH);
 
+        String result=""+monthOfYear+" "+dayOfMonth;
+        return result;*/
+        Date today=new Date();
+        Date theOtherDay=new Date(today.getTime()-differenceFromCurrentTime*60*60*24*10000);
+        return theOtherDay.toString();
 
     }
+
+
 
 }
