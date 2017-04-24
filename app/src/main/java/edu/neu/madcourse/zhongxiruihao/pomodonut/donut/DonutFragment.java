@@ -18,12 +18,14 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.orm.SugarContext;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Action;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Event;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.donut.DonutActivity.viewType;
 
@@ -38,6 +40,8 @@ public class DonutFragment extends Fragment {
     private viewType type;
     private ArrayList<Integer> colors;
     DateFormat formatter;
+    List<Action> listOfActions;
+
 
     public void init(int difference, viewType type){
         this.differenceFromCurrentTime=difference;
@@ -66,9 +70,25 @@ public class DonutFragment extends Fragment {
         formatter=new SimpleDateFormat("dd/MM/yyyy");
 
 
+
+        listOfActions=findActionsOfPresentDay();
+
         try {
             Event event = new Event("Test", 32);
             event.save();
+
+            Action action=new Action(event);
+            action.setStartTime(1493063860983L);
+            action.setEndTime(1493063860993L);
+            action.save();
+
+
+            Action action2=new Action(event);
+            action2.setStartTime(1492053860983L);
+            action2.setEndTime(1492063860993L);
+            action2.save();
+
+
         }
         catch (Exception e){
             Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
@@ -83,13 +103,11 @@ public class DonutFragment extends Fragment {
         View rootView=inflater.inflate(R.layout.fragment_donut,container,false);
         PieChart pieChart=(PieChart) rootView.findViewById(R.id.donut);
         initPieChart(pieChart);
-
         return rootView;
     }
 
     private void initPieChart(PieChart pieChart){
 
-        //Toast.makeText(getActivity(), getCurrentday(), Toast.LENGTH_SHORT).show();
 
         List<PieEntry> yvalues = new ArrayList<PieEntry>();
         yvalues.add(new PieEntry(8f, "Jan"));
@@ -125,18 +143,15 @@ public class DonutFragment extends Fragment {
 
         pieChart.setRotationEnabled(true);
 
-        pieChart.setCenterText(getCurrentday());
+
+        if (listOfActions!=null && !listOfActions.isEmpty()) {
+            pieChart.setCenterText("" + listOfActions.get(0));
+        }
+        else{
+            pieChart.setCenterText("");
+
+        }
         pieChart.setCenterTextSize(15f);
-
-        //Description description=new Description();
-        //description.setText("Test");
-        //description.setPosition(200,160);
-        //pieChart.setDescription(description);
-
-        //Legend l = pieChart.getLegend();
-        //l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
-        //l.setXEntrySpace(7);
-        //l.setYEntrySpace(5);
 
     }
 
@@ -145,6 +160,39 @@ public class DonutFragment extends Fragment {
         Date today=new Date();
         Date theOtherDay=new Date(today.getTime()-differenceFromCurrentTime*60*60*24*1000);
         return formatter.format(theOtherDay);
+
+    }
+
+
+    private List<Action> findActionsOfPresentDay(){
+        Date today=new Date();
+        Date presentDay=new Date(today.getTime()-differenceFromCurrentTime*60*60*24*1000);
+        long firstSecondOfPresentDay;
+        long lastSecondOfPresentDay;
+        try{
+            firstSecondOfPresentDay=formatter.parse(formatter.format(presentDay)).getTime();
+            lastSecondOfPresentDay=firstSecondOfPresentDay+60*60*24*1000-1;
+            //List<Action> actionsOfPresentDay=Action.listAll(Action.class);
+
+        }
+        catch (ParseException e){
+            String err=e.toString();
+            return null;
+        }
+       // List<Action> actionsOfPresentDay=Action.findWithQuery(Action.class, "Select * from ACTION where START_TIME >= ? and END_TIME <= ?", ""+firstSecondOfPresentDay, ""+lastSecondOfPresentDay);
+        List<Action> actionsOfPresentDay=Action.find(Action.class, " START_TIME >= ? and END_TIME <= ?", ""+firstSecondOfPresentDay, ""+lastSecondOfPresentDay);
+       // List<Action> actionsOfPresentDay=Action.find(Action.class, " START_TIME >= ?", ""+firstSecondOfPresentDay);
+
+        return actionsOfPresentDay;
+    }
+
+
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+      //  Action.deleteAll(Action.class);
+      //  Event.deleteAll(Event.class);
 
     }
 
