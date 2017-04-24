@@ -8,6 +8,11 @@ import java.io.Serializable;
  * Created by huangruihao on 4/22/17.
  */
 
+/**
+ * Event is not the same as WeekViewEvent.
+ * It is repeated action.
+ * That is, if several actions have the same name, they are the same event.
+ */
 public class Event extends SugarRecord implements Serializable {
 
     public String name;

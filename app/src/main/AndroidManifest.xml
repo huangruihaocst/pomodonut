@@ -40,13 +40,10 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-
         <activity android:name=".donut.DonutActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
         </activity>
-
-
 
         <meta-data
             android:name="DATABASE"

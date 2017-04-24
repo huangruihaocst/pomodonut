@@ -3,7 +3,6 @@ package edu.neu.madcourse.zhongxiruihao.pomodonut.dayview;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -35,6 +34,9 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Event;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.dayview.models.Action;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.dayview.models.ActionCollection;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.sensor.models.PermanentDataPoint;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.utils.Utils;
 
@@ -52,10 +54,13 @@ public class DayViewActivityFragment extends Fragment {
 
     public DayViewActivityFragment() {}
 
+    List<ActionCollection> actionCollections;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SugarContext.init(getActivity());
+        actionCollections = new ArrayList<>();
     }
 
     @Override
@@ -105,35 +110,55 @@ public class DayViewActivityFragment extends Fragment {
         return root;
     }
 
-    List<WeekViewEvent> getEvents(int year, int month) {
-        List<WeekViewEvent> events = new ArrayList<>();
-        WeekViewEvent event = new WeekViewEvent();
+    // read events for (year, month) from the database and update actionCollections
+    // month is 1 based
+    List<Action> getActions(int year, int month) {
+        for (ActionCollection collection: actionCollections) {
+            if (year == collection.year && month == collection.month) {
+                return collection.actions;
+            }
+        }
 
-        event.setName("event name");
+        List<Action> actions = new ArrayList<>();
+        // TODO: read actions from database
 
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 4);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, month - 1);
-        startTime.set(Calendar.YEAR, year);
-        event.setStartTime(startTime);
+        // dummy actions
+        Action action = new Action();
+        action.event = new Event("event name", 60 * 1000);
+        action.startTime = 1493042400000L;  // 2017.4.24-10:00:00
+        action.endTime = 1493042400000L + 60 * 60 * 1000;  // 2017.4.24-11:00:00
+        actions.add(action);
 
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR, 3);
-        endTime.set(Calendar.MONTH, month - 1);
-        event.setEndTime(endTime);
+        actionCollections.add(new ActionCollection(year, month, actions));
 
-        event.setColor(Color.BLUE);
-
-        events.add(event);
-        return events;
+        return actions;
     }
 
     private void setEvents(WeekView weekView) {
         weekView.setMonthChangeListener(new MonthLoader.MonthChangeListener() {
             @Override
             public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
-                return getEvents(newYear, newMonth);
+                List<Action> actions = getActions(newYear, newMonth);
+                List<WeekViewEvent> events = new ArrayList<>();
+                ArrayList<Integer> colors = Utils.getColors();
+                // change format: one action corresponds to one event
+                for (Action action: actions) {
+                    WeekViewEvent event = new WeekViewEvent();
+                    event.setName(action.event.name);
+                    Calendar startTime = Calendar.getInstance(Locale.getDefault());
+                    startTime.setTimeInMillis(action.startTime);
+                    event.setStartTime(startTime);
+                    Calendar endTime = (Calendar) startTime.clone();
+                    endTime.setTimeInMillis(action.endTime);
+                    event.setEndTime(endTime);
+                    event.setColor(colors.get(actions.indexOf(action)));
+                    // WeekView doesn't check year and month Orz
+                    if(startTime.get(Calendar.YEAR) == newYear
+                            && startTime.get(Calendar.MONTH) + 1 == newMonth) {
+                        events.add(event);
+                    }
+                }
+                return events;
             }
         });
     }
