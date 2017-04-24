@@ -43,7 +43,7 @@ public class DonutFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        ArrayList<Integer> colors = new ArrayList<>();
+        colors = new ArrayList<>();
 
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
@@ -70,7 +70,7 @@ public class DonutFragment extends Fragment {
 
     private void initPieChart(PieChart pieChart){
 
-        Toast.makeText(getActivity(), getCurrentday(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), getCurrentday(), Toast.LENGTH_SHORT).show();
 
         List<PieEntry> yvalues = new ArrayList<PieEntry>();
         yvalues.add(new PieEntry(8f, "Jan"));
@@ -104,6 +104,10 @@ public class DonutFragment extends Fragment {
         description.setText("");
         pieChart.setDescription(description);
 
+        pieChart.setRotationEnabled(true);
+
+        pieChart.setCenterText(getCurrentday());
+
         //Description description=new Description();
         //description.setText("Test");
         //description.setPosition(200,160);
@@ -126,7 +130,7 @@ public class DonutFragment extends Fragment {
         String result=""+monthOfYear+" "+dayOfMonth;
         return result;*/
         Date today=new Date();
-        Date theOtherDay=new Date(today.getTime()-differenceFromCurrentTime*60*60*24*10000);
+        Date theOtherDay=new Date(today.getTime()-differenceFromCurrentTime*60*60*24*1000);
         return theOtherDay.toString();
 
     }
