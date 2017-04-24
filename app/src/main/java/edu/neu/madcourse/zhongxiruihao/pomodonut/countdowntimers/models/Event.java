@@ -11,8 +11,8 @@ import java.io.Serializable;
 public class Event extends SugarRecord implements Serializable {
 
     public String name;
-    // time supposed to use in millisecond
-    public long time;
+    // duration supposed to use in millisecond
+    public long duration;
 
     // times this event happens
     private int frequency;
@@ -23,9 +23,9 @@ public class Event extends SugarRecord implements Serializable {
         return frequency;
     }
 
-    public Event(String name, long time) {
+    public Event(String name, long duration) {
         this.name = name;
-        this.time = time;
+        this.duration = duration;
     }
 
 }
