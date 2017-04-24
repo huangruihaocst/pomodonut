@@ -1,6 +1,5 @@
 package edu.neu.madcourse.zhongxiruihao.pomodonut.dayview;
 
-import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
@@ -46,6 +46,8 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.utils.Utils;
 public class DayViewActivityFragment extends Fragment {
 
     private static final int SECONDS_PER_DAY = 24 * 60 * 60;
+    private static final int SECONDS_PER_MINUTE = 60;
+    private static final int MILLISECONDS_PER_SECOND = 1000;
 
     private FloatingActionButton upUpFab;
     private FloatingActionButton upDownFab;
@@ -75,17 +77,19 @@ public class DayViewActivityFragment extends Fragment {
         setScrollable(scrollView, weekView);
 
         LineChart lineChart = (LineChart) root.findViewById(R.id.line_chart);
-        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        final Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         setLineChart(lineChart, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
 
         weekView.setOnEventClickListener(new WeekView.EventClickListener() {
             @Override
-            public void onEventClick(WeekViewEvent event, RectF eventRect) {
-                Log.i("fab", "click");
+            public void onEventClick(final WeekViewEvent event, final RectF eventRect) {
                 float top = eventRect.top;
                 float bottom = eventRect.bottom;
                 float left = eventRect.left;
                 float right = eventRect.right;
+
+                final float clickedX = (left + right) / 2;
+                final float clickedY = (top + bottom) / 2;
 
                 upUpFab = (FloatingActionButton) getActivity().findViewById(R.id.up_up_fab);
                 upDownFab = (FloatingActionButton) getActivity().findViewById(R.id.up_down_fab);
@@ -100,7 +104,110 @@ public class DayViewActivityFragment extends Fragment {
                 upUpFab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // TODO: up move up 5 min
+                        Calendar startTime = event.getStartTime();
+                        calendar.setTimeZone(TimeZone.getDefault());
+                        event.setStartTime(startTime);
+                        for (ActionCollection collection: actionCollections) {
+                            if (startTime.get(Calendar.YEAR) == collection.year
+                                    && startTime.get(Calendar.MONTH) + 1 == collection.month) {
+                                List<Action> actions = collection.actions;
+                                for (Action action: actions) {
+                                    if (action.startTime == event.getStartTime().getTimeInMillis()) {
+                                        action.startTime -= getResources().getInteger(R.integer.adjust_accuracy)
+                                                * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND;
+                                        hideFabs();
+                                        // TODO: write database here
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        weekView.notifyDatasetChanged();
+                    }
+                });
+
+                upDownFab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Calendar startTime = event.getStartTime();
+                        calendar.setTimeZone(TimeZone.getDefault());
+                        event.setStartTime(startTime);
+                        for (ActionCollection collection: actionCollections) {
+                            if (startTime.get(Calendar.YEAR) == collection.year
+                                    && startTime.get(Calendar.MONTH) + 1 == collection.month) {
+                                List<Action> actions = collection.actions;
+                                for (Action action: actions) {
+                                    if (action.startTime == event.getStartTime().getTimeInMillis()) {
+                                        if (action.startTime + getResources().getInteger(R.integer.adjust_accuracy)
+                                                * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND < action.endTime) {
+                                            action.startTime += getResources().getInteger(R.integer.adjust_accuracy)
+                                                    * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND;
+                                            hideFabs();
+                                            // TODO: write database here
+                                        } else {
+                                            Toast.makeText(getActivity(), getString(R.string.toast_start_time_bigger_than_end_time),
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        weekView.notifyDatasetChanged();
+                    }
+                });
+
+                downUpFab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Calendar endTime = event.getEndTime();
+                        calendar.setTimeZone(TimeZone.getDefault());
+                        event.setEndTime(endTime);
+                        for (ActionCollection collection: actionCollections) {
+                            if (endTime.get(Calendar.YEAR) == collection.year
+                                    && endTime.get(Calendar.MONTH) + 1 == collection.month) {
+                                List<Action> actions = collection.actions;
+                                for (Action action: actions) {
+                                    if (action.endTime == event.getEndTime().getTimeInMillis()) {
+                                        if (action.endTime - getResources().getInteger(R.integer.adjust_accuracy)
+                                                * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND > action.startTime) {
+                                            action.endTime -= getResources().getInteger(R.integer.adjust_accuracy)
+                                                    * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND;
+                                            hideFabs();
+                                            // TODO: write database here
+                                        } else {
+                                            Toast.makeText(getActivity(), getString(R.string.toast_start_time_bigger_than_end_time),
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        weekView.notifyDatasetChanged();
+                    }
+                });
+
+                downDownFab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Calendar endTime = event.getEndTime();
+                        calendar.setTimeZone(TimeZone.getDefault());
+                        event.setEndTime(endTime);
+                        for (ActionCollection collection: actionCollections) {
+                            if (endTime.get(Calendar.YEAR) == collection.year
+                                    && endTime.get(Calendar.MONTH) + 1 == collection.month) {
+                                List<Action> actions = collection.actions;
+                                for (Action action: actions) {
+                                    if (action.endTime == event.getEndTime().getTimeInMillis()) {
+                                        action.endTime += getResources().getInteger(R.integer.adjust_accuracy)
+                                                * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND;
+                                        hideFabs();
+                                        // TODO: write database here
+                                        break;
+                                    }
+                                }
+                            }
+                        }
                         weekView.notifyDatasetChanged();
                     }
                 });
@@ -126,7 +233,7 @@ public class DayViewActivityFragment extends Fragment {
         Action action = new Action();
         action.event = new Event("event name", 60 * 1000);
         action.startTime = 1493042400000L;  // 2017.4.24-10:00:00
-        action.endTime = 1493042400000L + 60 * 60 * 1000;  // 2017.4.24-11:00:00
+        action.endTime = 1493042400000L + 2 * 60 * 60 * 1000;  // 2017.4.24-12:00:00
         actions.add(action);
 
         actionCollections.add(new ActionCollection(year, month, actions));

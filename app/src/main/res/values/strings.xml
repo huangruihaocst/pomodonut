@@ -19,4 +19,5 @@
     <string name="text_seconds">SEC</string>
     <string name="action_save">DONE</string>
     <string name="action_edit_event">EDIT</string>
+    <string name="toast_start_time_bigger_than_end_time">Your start time is bigger than end time!</string>
 </resources>

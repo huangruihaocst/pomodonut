@@ -25,9 +25,4 @@ public class Action extends SugarRecord {
         this.event = event;
     }
 
-
-    public void setStartTime(long startTime){this.startTime=startTime;}
-
-    public void setEndTime(long endTime){this.endTime=endTime;}
-
 }
