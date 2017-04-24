@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -97,24 +98,24 @@ public class DonutFragment extends Fragment {
         pieChart.setData(data);
         pieChart.setEntryLabelTextSize(16f);
 
+        Legend l=pieChart.getLegend();
+        l.setEnabled(false);
+        Description description=new Description();
+        description.setText("");
+        pieChart.setDescription(description);
+
         //Description description=new Description();
         //description.setText("Test");
         //description.setPosition(200,160);
         //pieChart.setDescription(description);
-        //pieChart.setRotationEnabled(false);
 
-        Legend l = pieChart.getLegend();
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
-        l.setXEntrySpace(7);
-        l.setYEntrySpace(5);
-
+        //Legend l = pieChart.getLegend();
+        //l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+        //l.setXEntrySpace(7);
+        //l.setYEntrySpace(5);
 
 
-       // Legend l = pieChart.getLegend();
-       // l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
-       // l.setXEntrySpace(7f);
-       // l.setYEntrySpace(5f);
-       // l.setYOffset(0f);
+
 
 
     }

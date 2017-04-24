@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="edu.neu.madcourse.zhongxiruihao.pomodonut.donut.DonutActivity">
+
+    <item
+        android:id="@+id/choose_day"
+        android:title="Day"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/choose_week"
+        android:title="Week"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/choose_month"
+        android:title="Month"
+        app:showAsAction="never"/>
+
+
+</menu>
