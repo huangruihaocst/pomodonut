@@ -64,34 +64,68 @@ public class CountdownTimersFragment extends Fragment {
         }
         if (events != null) {
             int count = events.length;
-            for (int i = 0; i < timers.length; ++i) {
-                if (i >= count) {
-                    timers[i].setVisibility(View.GONE);
-                } else {
-                    ((TextView) timers[i].findViewById(R.id.text_timer_title)).setText(events[i].name);
-                    ((TextView) timers[i].findViewById(R.id.text_timer_time))
-                            .setText(Utils.formatMillisecond(events[i].duration));
-                    ArrayList<Integer> colors = Utils.getColors();
-                    LayerDrawable timerBackground = (LayerDrawable) timers[i].getBackground();
-                    GradientDrawable circle = (GradientDrawable) timerBackground.findDrawableByLayerId(R.id.background_circle);
-                    circle.setStroke(Utils.dpToPx(getContext(), 2),
-                            colors.get(page * CountdownTimersActivity.TIMERS_PER_PAGE + i));
-                    GradientDrawable line = (GradientDrawable) timerBackground.findDrawableByLayerId(R.id.background_line);
-                    line.setStroke(Utils.dpToPx(getContext(), 1),
-                            colors.get(page * CountdownTimersActivity.TIMERS_PER_PAGE + i));
-                    final String eventName = events[i].name;
-                    final long eventTime = events[i].duration;
-                    timers[i].findViewById(R.id.button_timer_right).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Bundle data = new Bundle();
-                            data.putString(EVENT_NAME_BUNDLE_KEY, eventName);
-                            data.putLong(EVENT_TIME_BUNDLE_KEY, eventTime);
-                            Intent intent = new Intent(getActivity(), EditEventActivity.class);
-                            intent.putExtras(data);
-                            startActivity(intent);
-                        }
-                    });
+            if (page == 0) {
+                timers[0].setVisibility(View.INVISIBLE);
+                for (int i = 1; i < timers.length; ++i) {
+                    if (i >= count) {
+                        timers[i].setVisibility(View.GONE);
+                    } else {
+                        ((TextView) timers[i].findViewById(R.id.text_timer_title)).setText(events[i - 1].name);
+                        ((TextView) timers[i].findViewById(R.id.text_timer_time))
+                                .setText(Utils.formatMillisecond(events[i - 1].duration));
+                        ArrayList<Integer> colors = Utils.getColors();
+                        LayerDrawable timerBackground = (LayerDrawable) timers[i].getBackground();
+                        GradientDrawable circle = (GradientDrawable) timerBackground.findDrawableByLayerId(R.id.background_circle);
+                        circle.setStroke(Utils.dpToPx(getContext(), 2),
+                                colors.get(page * CountdownTimersActivity.TIMERS_PER_PAGE + i - 1));
+                        GradientDrawable line = (GradientDrawable) timerBackground.findDrawableByLayerId(R.id.background_line);
+                        line.setStroke(Utils.dpToPx(getContext(), 1),
+                                colors.get(page * CountdownTimersActivity.TIMERS_PER_PAGE + i - 1));
+                        final String eventName = events[i - 1].name;
+                        final long eventTime = events[i - 1].duration;
+                        timers[i].findViewById(R.id.button_timer_right).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Bundle data = new Bundle();
+                                data.putString(EVENT_NAME_BUNDLE_KEY, eventName);
+                                data.putLong(EVENT_TIME_BUNDLE_KEY, eventTime);
+                                Intent intent = new Intent(getActivity(), EditEventActivity.class);
+                                intent.putExtras(data);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                }
+            } else {
+                for (int i = 0; i < timers.length; ++i) {
+                    if (i >= count) {
+                        timers[i].setVisibility(View.GONE);
+                    } else {
+                        ((TextView) timers[i].findViewById(R.id.text_timer_title)).setText(events[i].name);
+                        ((TextView) timers[i].findViewById(R.id.text_timer_time))
+                                .setText(Utils.formatMillisecond(events[i].duration));
+                        ArrayList<Integer> colors = Utils.getColors();
+                        LayerDrawable timerBackground = (LayerDrawable) timers[i].getBackground();
+                        GradientDrawable circle = (GradientDrawable) timerBackground.findDrawableByLayerId(R.id.background_circle);
+                        circle.setStroke(Utils.dpToPx(getContext(), 2),
+                                colors.get(page * CountdownTimersActivity.TIMERS_PER_PAGE + i));
+                        GradientDrawable line = (GradientDrawable) timerBackground.findDrawableByLayerId(R.id.background_line);
+                        line.setStroke(Utils.dpToPx(getContext(), 1),
+                                colors.get(page * CountdownTimersActivity.TIMERS_PER_PAGE + i));
+                        final String eventName = events[i].name;
+                        final long eventTime = events[i].duration;
+                        timers[i].findViewById(R.id.button_timer_right).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Bundle data = new Bundle();
+                                data.putString(EVENT_NAME_BUNDLE_KEY, eventName);
+                                data.putLong(EVENT_TIME_BUNDLE_KEY, eventTime);
+                                Intent intent = new Intent(getActivity(), EditEventActivity.class);
+                                intent.putExtras(data);
+                                startActivity(intent);
+                            }
+                        });
+                    }
                 }
             }
         } else {  // disable all

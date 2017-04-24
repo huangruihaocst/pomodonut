@@ -57,12 +57,22 @@ public class CountdownTimersActivity extends AppCompatActivity {
         // TODO: handle scenario when events.length == 0
         for (int i = 0; i < NUM_PAGES; ++i) {
             Event[] eventsCurrentPage;
-            if (i < events.length / TIMERS_PER_PAGE) {
-                eventsCurrentPage = Arrays.copyOfRange(events,
-                        i * TIMERS_PER_PAGE, (i + 1) * TIMERS_PER_PAGE);
-            } else if (i == events.length / TIMERS_PER_PAGE) {
-                eventsCurrentPage = Arrays.copyOfRange(events,
-                        i * TIMERS_PER_PAGE, events.length);
+            if (i < (events.length + 1) / TIMERS_PER_PAGE) {
+                if (i == 0) {
+                    eventsCurrentPage = Arrays.copyOfRange(events,
+                            0, TIMERS_PER_PAGE);
+                } else {
+                    eventsCurrentPage = Arrays.copyOfRange(events,
+                            i * TIMERS_PER_PAGE - 1, (i + 1) * TIMERS_PER_PAGE - 1);
+                }
+            } else if (i == (events.length + 1) / TIMERS_PER_PAGE) {
+                if (i == 0) {
+                    eventsCurrentPage = Arrays.copyOfRange(events,
+                            0, events.length);
+                } else {
+                    eventsCurrentPage = Arrays.copyOfRange(events,
+                            i * TIMERS_PER_PAGE - 1, events.length);
+                }
             } else {
                 // don't show this page
                 break;
@@ -156,7 +166,7 @@ public class CountdownTimersActivity extends AppCompatActivity {
 
     private Event[] getEvents() {
         // TODO: read database and get real events
-        final int COUNT = 16;
+        final int COUNT = 5;
         Event[] events = new Event[COUNT];
         for (int i = 0;i < COUNT; ++i) {
             events[i] = new Event("Event" + i, i * 1000);
