@@ -26,7 +26,7 @@ public class CountdownTimersFragment extends Fragment {
     private static final String PAGE_ARGS_KEY = "page args key";
 
     public static final String EVENT_NAME_BUNDLE_KEY = "event name bundle key";
-    public static final String EVENT_TIME_BUNDLE_KEY = "event time bundle key";
+    public static final String EVENT_TIME_BUNDLE_KEY = "event duration bundle key";
 
     private Event[] events;
     public int page;  // page index
@@ -70,7 +70,7 @@ public class CountdownTimersFragment extends Fragment {
                 } else {
                     ((TextView) timers[i].findViewById(R.id.text_timer_title)).setText(events[i].name);
                     ((TextView) timers[i].findViewById(R.id.text_timer_time))
-                            .setText(Utils.formatMillisecond(events[i].time));
+                            .setText(Utils.formatMillisecond(events[i].duration));
                     ArrayList<Integer> colors = Utils.getColors();
                     LayerDrawable timerBackground = (LayerDrawable) timers[i].getBackground();
                     GradientDrawable circle = (GradientDrawable) timerBackground.findDrawableByLayerId(R.id.background_circle);
@@ -80,7 +80,7 @@ public class CountdownTimersFragment extends Fragment {
                     line.setStroke(Utils.dpToPx(getContext(), 1),
                             colors.get(page * CountdownTimersActivity.TIMERS_PER_PAGE + i));
                     final String eventName = events[i].name;
-                    final long eventTime = events[i].time;
+                    final long eventTime = events[i].duration;
                     timers[i].findViewById(R.id.button_timer_right).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

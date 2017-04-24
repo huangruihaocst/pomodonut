@@ -16,7 +16,7 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
 public class EditEventActivityFragment extends Fragment {
 
     private static final String EVENT_NAME_ARGS_KEY = "event name args key";
-    private static final String EVENT_TIME_ARGS_KEY = "event time args key";
+    private static final String EVENT_TIME_ARGS_KEY = "event duration args key";
 
     private static final int MINUTES_PER_HOUR = 60;
     private static final int SECONDS_PER_MINUTE = 60;

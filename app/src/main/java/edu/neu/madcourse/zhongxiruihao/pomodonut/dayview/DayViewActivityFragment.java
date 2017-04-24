@@ -192,7 +192,7 @@ public class DayViewActivityFragment extends Fragment {
             e.printStackTrace();
         }
 
-        // find accel data in the database whose time is between the above two unix time
+        // find accel data in the database whose time is between the above two unix duration
         List<PermanentDataPoint> permanentDataPointList = PermanentDataPoint
                 .findWithQuery(PermanentDataPoint.class,
                         "select * from PERMANENT_DATA_POINT where time >= ? and time < ?",

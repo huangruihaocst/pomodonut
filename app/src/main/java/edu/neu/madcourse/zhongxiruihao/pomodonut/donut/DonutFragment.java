@@ -15,11 +15,16 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.orm.SugarContext;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Event;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.donut.DonutActivity.viewType;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
@@ -32,6 +37,7 @@ public class DonutFragment extends Fragment {
     private int differenceFromCurrentTime;
     private viewType type;
     private ArrayList<Integer> colors;
+    DateFormat formatter;
 
     public void init(int difference, viewType type){
         this.differenceFromCurrentTime=difference;
@@ -42,6 +48,7 @@ public class DonutFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        SugarContext.init(getActivity());
 
         colors = new ArrayList<>();
 
@@ -55,6 +62,18 @@ public class DonutFragment extends Fragment {
             colors.add(c);
         for (int c : ColorTemplate.PASTEL_COLORS)
             colors.add(c);
+
+        formatter=new SimpleDateFormat("dd/MM/yyyy");
+
+
+        try {
+            Event event = new Event("Test", 32);
+            event.save();
+        }
+        catch (Exception e){
+            Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
@@ -107,6 +126,7 @@ public class DonutFragment extends Fragment {
         pieChart.setRotationEnabled(true);
 
         pieChart.setCenterText(getCurrentday());
+        pieChart.setCenterTextSize(15f);
 
         //Description description=new Description();
         //description.setText("Test");
@@ -122,16 +142,9 @@ public class DonutFragment extends Fragment {
 
 
     private String getCurrentday(){
-        /*
-        Calendar cal= Calendar.getInstance();
-        int dayOfMonth=cal.get(Calendar.DAY_OF_MONTH);
-        int monthOfYear=cal.get(Calendar.MONTH);
-
-        String result=""+monthOfYear+" "+dayOfMonth;
-        return result;*/
         Date today=new Date();
         Date theOtherDay=new Date(today.getTime()-differenceFromCurrentTime*60*60*24*1000);
-        return theOtherDay.toString();
+        return formatter.format(theOtherDay);
 
     }
 
