@@ -46,6 +46,11 @@ public class DayViewActivityFragment extends Fragment {
 
     private static final int FAB_SIZE = 36;  // dp
 
+    private FloatingActionButton upUpFab;
+    private FloatingActionButton upDownFab;
+    private FloatingActionButton downUpFab;
+    private FloatingActionButton downDownFab;
+
     public DayViewActivityFragment() {
     }
 
@@ -59,8 +64,21 @@ public class DayViewActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_day_view, container, false);
+
+        upUpFab = (FloatingActionButton) getActivity().findViewById(R.id.up_up_fab);
+        upDownFab = (FloatingActionButton) getActivity().findViewById(R.id.up_down_fab);
+        downUpFab = (FloatingActionButton) getActivity().findViewById(R.id.down_up_fab);
+        downDownFab = (FloatingActionButton) getActivity().findViewById(R.id.down_down_fab);
+
         final WeekView weekView = (WeekView) root.findViewById(R.id.week_view);
         setEvents(weekView);
+
+        final ScrollView scrollView = (ScrollView) root.findViewById(R.id.scroll_view);
+        setScrollable(scrollView, weekView);
+
+        LineChart lineChart = (LineChart) root.findViewById(R.id.line_chart);
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        setLineChart(lineChart, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
 
         weekView.setOnEventClickListener(new WeekView.EventClickListener() {
             @Override
@@ -71,27 +89,13 @@ public class DayViewActivityFragment extends Fragment {
                 float left = eventRect.left;
                 float right = eventRect.right;
 
-                FloatingActionButton upUpFab = (FloatingActionButton) getActivity().findViewById(R.id.up_up_fab);
                 setFabPosition(upUpFab, left + FAB_SIZE / 2, top + FAB_SIZE / 2);
-
-                FloatingActionButton upDownFab = (FloatingActionButton) getActivity().findViewById(R.id.up_down_fab);
                 setFabPosition(upDownFab, right - FAB_SIZE * 3, top + FAB_SIZE / 2);
-
-                FloatingActionButton downUpFab = (FloatingActionButton) getActivity().findViewById(R.id.down_up_fab);
                 setFabPosition(downUpFab, right - FAB_SIZE * 3, bottom + FAB_SIZE * 5);
-
-                FloatingActionButton downDownFab = (FloatingActionButton) getActivity().findViewById(R.id.down_down_fab);
                 setFabPosition(downDownFab, left + FAB_SIZE / 2, bottom + FAB_SIZE * 5);
 
             }
         });
-
-        final ScrollView scrollView = (ScrollView) root.findViewById(R.id.scroll_view);
-        setScrollable(scrollView, weekView);
-
-        LineChart lineChart = (LineChart) root.findViewById(R.id.line_chart);
-        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-        setLineChart(lineChart, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
 
         return root;
     }
@@ -191,6 +195,13 @@ public class DayViewActivityFragment extends Fragment {
                 @Override
                 public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                     scrollView.scrollTo(scrollX, scrollY);
+
+                }
+            });
+            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    hideFabs();
                 }
             });
         } else {
@@ -200,6 +211,12 @@ public class DayViewActivityFragment extends Fragment {
                     int scrollX = scrollView.getScrollX(); //for horizontalScrollView
                     int scrollY = scrollView.getScrollY(); //for verticalScrollView
                     scrollView.scrollTo(scrollX, scrollY);
+                }
+            });
+            scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                @Override
+                public void onScrollChanged() {
+                    hideFabs();
                 }
             });
         }
@@ -236,5 +253,12 @@ public class DayViewActivityFragment extends Fragment {
         fab.setVisibility(View.VISIBLE);
         fab.setX(x);
         fab.setY(y);
+    }
+
+    private void hideFabs() {
+        upUpFab.setVisibility(View.GONE);
+        upDownFab.setVisibility(View.GONE);
+        downUpFab.setVisibility(View.GONE);
+        downDownFab.setVisibility(View.GONE);
     }
 }
