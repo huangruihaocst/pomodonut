@@ -143,7 +143,7 @@ public class DayViewActivityFragment extends Fragment {
         int recordFrequency = getContext().getResources().getInteger(R.integer.record_accel_frequency);
         int recordPerDay = SECONDS_PER_DAY / recordFrequency;
 
-        // get the unix duration of local start duration and end duration of a day
+        // get the unix time of local start time and end time of a day
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
                 Locale.getDefault());
         String dateString = String.format(Locale.US, "%04d", year) + "-"
@@ -167,10 +167,10 @@ public class DayViewActivityFragment extends Fragment {
             e.printStackTrace();
         }
 
-        // find accel data in the database whose duration is between the above two unix duration
+        // find accel data in the database whose time is between the above two unix duration
         List<PermanentDataPoint> permanentDataPointList = PermanentDataPoint
                 .findWithQuery(PermanentDataPoint.class,
-                        "select * from PERMANENT_DATA_POINT where duration >= ? and duration < ?",
+                        "select * from PERMANENT_DATA_POINT where time >= ? and time < ?",
                         String.valueOf(startUnix), String.valueOf(endUnix));
 
         List<Entry> lineEntries = new ArrayList<>();
