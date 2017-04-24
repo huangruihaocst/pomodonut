@@ -91,6 +91,14 @@ public class DayViewActivityFragment extends Fragment {
                 setFabPosition(upDownFab, right - upDownFab.getWidth(), top - scrollView.getScrollY());
                 setFabPosition(downUpFab, right - downUpFab.getWidth(), bottom + 2 * downUpFab.getHeight() - scrollView.getScrollY());
                 setFabPosition(downDownFab, left, bottom + 2 * downDownFab.getHeight() - scrollView.getScrollY());
+
+                upUpFab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO: up move up 5 min
+                        weekView.notifyDatasetChanged();
+                    }
+                });
             }
         });
 
