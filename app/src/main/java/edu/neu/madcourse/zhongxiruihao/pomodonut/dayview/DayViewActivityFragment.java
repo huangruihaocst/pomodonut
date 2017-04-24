@@ -75,13 +75,13 @@ public class DayViewActivityFragment extends Fragment {
                 setFabPosition(upUpFab, left + FAB_SIZE / 2, top + FAB_SIZE / 2);
 
                 FloatingActionButton upDownFab = (FloatingActionButton) getActivity().findViewById(R.id.up_down_fab);
-                setFabPosition(upDownFab, right - FAB_SIZE * 2 / 3, top + FAB_SIZE / 2);
+                setFabPosition(upDownFab, right - FAB_SIZE * 3, top + FAB_SIZE / 2);
 
                 FloatingActionButton downUpFab = (FloatingActionButton) getActivity().findViewById(R.id.down_up_fab);
-                setFabPosition(downUpFab, right, bottom);
+                setFabPosition(downUpFab, right - FAB_SIZE * 3, bottom + FAB_SIZE * 5);
 
                 FloatingActionButton downDownFab = (FloatingActionButton) getActivity().findViewById(R.id.down_down_fab);
-                setFabPosition(downDownFab, left, bottom);
+                setFabPosition(downDownFab, left + FAB_SIZE / 2, bottom + FAB_SIZE * 5);
 
             }
         });
@@ -234,7 +234,7 @@ public class DayViewActivityFragment extends Fragment {
 
     private void setFabPosition(FloatingActionButton fab, float x, float y) {
         fab.setVisibility(View.VISIBLE);
-        fab.setX(Utils.dpToPx(getContext(), (int) x));
-        fab.setY(Utils.dpToPx(getContext(), (int) y));
+        fab.setX(x);
+        fab.setY(y);
     }
 }
