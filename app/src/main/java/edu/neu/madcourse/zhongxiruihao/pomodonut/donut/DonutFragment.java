@@ -25,8 +25,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Action;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Event;
+import edu.neu.madcourse.zhongxiruihao.pomodonut.dayview.models.Action;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.donut.DonutActivity.viewType;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.R;
@@ -93,9 +93,8 @@ public class DonutFragment extends Fragment {
         catch (Exception e){
             Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
         }
-
-
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -172,19 +171,16 @@ public class DonutFragment extends Fragment {
         try{
             firstSecondOfPresentDay=formatter.parse(formatter.format(presentDay)).getTime();
             lastSecondOfPresentDay=firstSecondOfPresentDay+60*60*24*1000-1;
-            //List<Action> actionsOfPresentDay=Action.listAll(Action.class);
-
+            List<Action> actionsOfPresentDay= Action.find(Action.class, " START_TIME >= ? and END_TIME <= ?", ""+firstSecondOfPresentDay, ""+lastSecondOfPresentDay);
+            return actionsOfPresentDay;
         }
         catch (ParseException e){
             String err=e.toString();
             return null;
         }
-       // List<Action> actionsOfPresentDay=Action.findWithQuery(Action.class, "Select * from ACTION where START_TIME >= ? and END_TIME <= ?", ""+firstSecondOfPresentDay, ""+lastSecondOfPresentDay);
-        List<Action> actionsOfPresentDay=Action.find(Action.class, " START_TIME >= ? and END_TIME <= ?", ""+firstSecondOfPresentDay, ""+lastSecondOfPresentDay);
-       // List<Action> actionsOfPresentDay=Action.find(Action.class, " START_TIME >= ?", ""+firstSecondOfPresentDay);
-
-        return actionsOfPresentDay;
     }
+
+
 
 
 
