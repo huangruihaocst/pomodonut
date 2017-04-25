@@ -5,9 +5,11 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -58,6 +60,10 @@ public class CountdownTimersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_countdown_timers, container, false);
+        if (events.length == 1) {
+            ((LinearLayout) root.findViewById(R.id.outer_linear_layout))
+                    .setGravity(Gravity.LEFT);
+        }
         View[] timers = new View[CountdownTimersActivity.TIMERS_PER_PAGE];
         for (int i = 0; i < timers.length; ++i) {
             timers[i] = root.findViewById(timerIds[i]);

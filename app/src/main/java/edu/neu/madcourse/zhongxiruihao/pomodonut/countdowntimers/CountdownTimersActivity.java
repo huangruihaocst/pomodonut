@@ -28,7 +28,7 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.voicerecognition.SpeechActivity
 
 public class CountdownTimersActivity extends AppCompatActivity {
 
-    private static final int NUM_PAGES = 4;
+    private static final int MAX_PAGES = 4;
     public static final int TIMERS_PER_PAGE = 6;
 
     private ViewPager viewPager;
@@ -55,28 +55,50 @@ public class CountdownTimersActivity extends AppCompatActivity {
         ArrayList<CountdownTimersFragment> fragments = new ArrayList<>();
         Event[] events = getEvents();  // events that are going to show on the main screen
         // TODO: handle scenario when events.length == 0
-        for (int i = 0; i < NUM_PAGES; ++i) {
+        int pages = (events.length + 1) / TIMERS_PER_PAGE
+                + ((events.length + 1) % TIMERS_PER_PAGE == 0 ? 0 : 1);
+        if (pages > MAX_PAGES) {
+            pages = MAX_PAGES;
+        }
+        for (int i = 0; i < pages; ++i) {
             Event[] eventsCurrentPage;
-            if (i < (events.length + 1) / TIMERS_PER_PAGE) {
-                if (i == 0) {
+            if (i == 0) {
+                if (pages == 1) {  // no more than (TIMERS_PER_PAGE - 1) timers
                     eventsCurrentPage = Arrays.copyOfRange(events,
-                            0, TIMERS_PER_PAGE);
+                            0, events.length + 1);
                 } else {
+                    eventsCurrentPage = Arrays.copyOfRange(events, 0, TIMERS_PER_PAGE);
+                }
+            } else {
+                if (i < pages - 1) {  // page in the middle
                     eventsCurrentPage = Arrays.copyOfRange(events,
                             i * TIMERS_PER_PAGE - 1, (i + 1) * TIMERS_PER_PAGE - 1);
-                }
-            } else if (i == (events.length + 1) / TIMERS_PER_PAGE) {
-                if (i == 0) {
-                    eventsCurrentPage = Arrays.copyOfRange(events,
-                            0, events.length);
                 } else {
                     eventsCurrentPage = Arrays.copyOfRange(events,
                             i * TIMERS_PER_PAGE - 1, events.length);
                 }
-            } else {
-                // don't show this page
-                break;
             }
+//            if (i < (events.length + 1) / TIMERS_PER_PAGE) {
+//                if (i == 0) {
+//                    eventsCurrentPage = Arrays.copyOfRange(events,
+//                            0, TIMERS_PER_PAGE);
+//                } else {
+//                    eventsCurrentPage = Arrays.copyOfRange(events,
+//                            i * TIMERS_PER_PAGE - 1, (i + 1) * TIMERS_PER_PAGE - 1);
+//                }
+//            } else if ((events.length + 1) % TIMERS_PER_PAGE != 0 &&
+//                    i == (events.length + 1) / TIMERS_PER_PAGE) {
+//                if (i == 0) {
+//                    eventsCurrentPage = Arrays.copyOfRange(events,
+//                            0, events.length);
+//                } else {
+//                    eventsCurrentPage = Arrays.copyOfRange(events,
+//                            i * TIMERS_PER_PAGE - 1, events.length);
+//                }
+//            } else {
+//                // don't show this page
+//                break;
+//            }
             fragments.add(CountdownTimersFragment.newInstance(eventsCurrentPage, i));
         }
         viewPager.setAdapter(new CountdownTimersPagerAdapter(getSupportFragmentManager(), fragments));
@@ -166,7 +188,7 @@ public class CountdownTimersActivity extends AppCompatActivity {
 
     private Event[] getEvents() {
         // TODO: read database and get real events
-        final int COUNT = 5;
+        final int COUNT = 6;
         Event[] events = new Event[COUNT];
         for (int i = 0;i < COUNT; ++i) {
             events[i] = new Event("Event" + i, i * 1000);
