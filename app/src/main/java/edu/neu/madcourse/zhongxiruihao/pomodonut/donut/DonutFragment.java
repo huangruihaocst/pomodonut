@@ -21,9 +21,13 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Event;
 import edu.neu.madcourse.zhongxiruihao.pomodonut.dayview.models.Action;
@@ -39,8 +43,9 @@ public class DonutFragment extends Fragment {
     private int differenceFromCurrentTime;
     private viewType type;
     private ArrayList<Integer> colors;
-    DateFormat formatter;
-    List<Action> listOfActions;
+    private DateFormat formatter;
+    private EventAndDuration[] eventAndDurations;
+    private static final int NUM_EVENTS_IN_PIE=8;
 
 
     public void init(int difference, viewType type){
@@ -70,14 +75,16 @@ public class DonutFragment extends Fragment {
         formatter=new SimpleDateFormat("dd/MM/yyyy");
 
 
+        eventAndDurations=getTopEventDuration(findActionsOfPresentDay(),NUM_EVENTS_IN_PIE);
 
-        listOfActions=findActionsOfPresentDay();
-
+        /*
         try {
             Event event = new Event("Test", 32);
             event.save();
+            Event bloodyEvent=new Event("Bloody Test",32);
+            bloodyEvent.save();
 
-            Action action=new Action(event);
+            Action action=new Action(bloodyEvent);
             action.setStartTime(1493063860983L);
             action.setEndTime(1493063860993L);
             action.save();
@@ -92,7 +99,7 @@ public class DonutFragment extends Fragment {
         }
         catch (Exception e){
             Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
 
@@ -109,30 +116,37 @@ public class DonutFragment extends Fragment {
 
 
         List<PieEntry> yvalues = new ArrayList<PieEntry>();
-        yvalues.add(new PieEntry(8f, "Jan"));
-        yvalues.add(new PieEntry(15f, "Feb"));
-        yvalues.add(new PieEntry(12f, "March"));
-        yvalues.add(new PieEntry(25f, "April "));
-        yvalues.add(new PieEntry(23f, "May"));
-        yvalues.add(new PieEntry(17f, "June"));
-        yvalues.add(new PieEntry(18f, "July"));
-        yvalues.add(new PieEntry(21f, "August"));
-        yvalues.add(new PieEntry(21f, "Sep"));
-        yvalues.add(new PieEntry(21f, "Oct"));
-        yvalues.add(new PieEntry(21f, "Noc"));
-
-
         PieDataSet dataSet = new PieDataSet(yvalues, "");
 
-        dataSet.setColors(colors);
+
+        if (eventAndDurations==null || eventAndDurations.length==0){
+
+            yvalues.add(new PieEntry(1f,"???"));
+            dataSet.setColor(Color.rgb(160,160,160));
+            dataSet.setDrawValues(false);
+        }
+        else{
+
+            for (int i=0;i<eventAndDurations.length;i++){
+                yvalues.add(new PieEntry(eventAndDurations[i].getDuration(),
+                        eventAndDurations[i].getEventName()));
+            }
+            dataSet.setColors(colors);
+
+        }
+
+
+
+
 
 
         PieData data = new PieData(dataSet);
-        data.setValueTextSize(16f);
+        data.setValueTextSize(24f);
         data.setValueTextColor(Color.WHITE);
 
+
         pieChart.setData(data);
-        pieChart.setEntryLabelTextSize(16f);
+        pieChart.setEntryLabelTextSize(24f);
 
         Legend l=pieChart.getLegend();
         l.setEnabled(false);
@@ -143,14 +157,11 @@ public class DonutFragment extends Fragment {
         pieChart.setRotationEnabled(true);
 
 
-        if (listOfActions!=null && !listOfActions.isEmpty()) {
-            pieChart.setCenterText("" + listOfActions.get(0));
-        }
-        else{
-            pieChart.setCenterText("");
+        pieChart.setCenterText(getCurrentday());
 
-        }
-        pieChart.setCenterTextSize(15f);
+
+
+        pieChart.setCenterTextSize(21f);
 
     }
 
@@ -159,7 +170,6 @@ public class DonutFragment extends Fragment {
         Date today=new Date();
         Date theOtherDay=new Date(today.getTime()-differenceFromCurrentTime*60*60*24*1000);
         return formatter.format(theOtherDay);
-
     }
 
 
@@ -171,12 +181,72 @@ public class DonutFragment extends Fragment {
         try{
             firstSecondOfPresentDay=formatter.parse(formatter.format(presentDay)).getTime();
             lastSecondOfPresentDay=firstSecondOfPresentDay+60*60*24*1000-1;
-            List<Action> actionsOfPresentDay= Action.find(Action.class, " START_TIME >= ? and END_TIME <= ?", ""+firstSecondOfPresentDay, ""+lastSecondOfPresentDay);
-            return actionsOfPresentDay;
+
+            return findActionsBetweenTwoTimes(firstSecondOfPresentDay,lastSecondOfPresentDay);
         }
         catch (ParseException e){
             String err=e.toString();
             return null;
+        }
+    }
+
+
+    private List<Action> findActionsBetweenTwoTimes(long startTime, long endTime){
+        if (startTime>=endTime) return null;
+        List<Action> actionsInBetween= Action.find(Action.class, " START_TIME >= ? and END_TIME <= ?", ""+startTime, ""+endTime);
+        List<Action> actionsWithEalierStartTime=Action.find(Action.class, " START_TIME < ? and  END_TIME >= ? and END_TIME <= ?", ""+startTime,""+startTime, ""+endTime);
+        List<Action> actionsWithLaterEndTime=Action.find(Action.class, " START_TIME >= ? and  START_TIME <= ? and END_TIME >= ?", ""+startTime, ""+endTime,""+endTime);
+
+        for (Action action : actionsWithEalierStartTime){
+            action.setStartTime(startTime);
+            actionsInBetween.add(action);
+        }
+
+        for (Action action: actionsWithLaterEndTime){
+            action.setEndTime(endTime);
+            actionsInBetween.add(action);
+        }
+
+        return actionsInBetween;
+    }
+
+
+    private EventAndDuration[] getTopEventDuration(List<Action> actions, int desiredSize){
+        HashMap<String, Long> eventNameToDuration=new HashMap<>();
+        for (Action action : actions){
+            String eventName=action.getEvent().getName();
+            if (eventNameToDuration.containsKey(eventName)){
+                long oldDuration=eventNameToDuration.get(action.getEvent().getName());
+                long newDuration=oldDuration+(action.getEndTime()-action.getStartTime());
+                eventNameToDuration.put(eventName,newDuration);
+            }
+            else{
+                long newDuration=action.getEndTime()-action.getStartTime();
+                eventNameToDuration.put(eventName,newDuration);
+            }
+        }
+
+        EventAndDuration[] arr=new EventAndDuration[eventNameToDuration.size()];
+        int index=0;
+
+        for (String key: eventNameToDuration.keySet()){
+            arr[index]=new EventAndDuration(key,eventNameToDuration.get(key));
+            index++;
+        }
+
+        Arrays.sort(arr, new Comparator<EventAndDuration>() {
+            @Override
+            public int compare(EventAndDuration t1, EventAndDuration t2) {
+                return (int)(t1.getDuration()-t2.getDuration());
+            }
+        });
+        if (desiredSize>=arr.length){return arr;}
+        else{
+            EventAndDuration[] result=new EventAndDuration[desiredSize];
+            for (int i=0;i<desiredSize;i++){
+                result[i]=arr[i];
+            }
+            return result;
         }
     }
 
@@ -187,9 +257,24 @@ public class DonutFragment extends Fragment {
     @Override
     public void onDestroy(){
         super.onDestroy();
-      //  Action.deleteAll(Action.class);
-      //  Event.deleteAll(Event.class);
+       // Action.deleteAll(Action.class);
+       // Event.deleteAll(Event.class);
 
+    }
+
+
+
+    private class EventAndDuration{
+        String eventName;
+        long duration;
+
+        EventAndDuration(String eventName,long duration){
+            this.eventName=eventName;
+            this.duration=duration;
+        }
+
+        String getEventName(){return eventName;}
+        long getDuration(){return duration;}
     }
 
 

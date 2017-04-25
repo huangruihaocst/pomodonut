@@ -15,6 +15,14 @@ import edu.neu.madcourse.zhongxiruihao.pomodonut.countdowntimers.models.Event;
 public class Action extends SugarRecord {
 
     public Event event;
+    public long startTime;
+    public long endTime;
+
+    public Action() {}
+
+    public Action(Event event) {
+        this.event = event;
+    }
 
     public long getStartTime() {
         return startTime;
@@ -32,13 +40,10 @@ public class Action extends SugarRecord {
         this.endTime = endTime;
     }
 
-    public long startTime;
-    public long endTime;
-
-    public Action() {}
-
-    public Action(Event event) {
-        this.event = event;
+    public Event getEvent(){
+        return event;
     }
+
+
 
 }

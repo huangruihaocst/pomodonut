@@ -28,9 +28,13 @@ public class Event extends SugarRecord implements Serializable {
         return frequency;
     }
 
+    public String getName(){ return name;}
+
     public Event(String name, long duration) {
         this.name = name;
         this.duration = duration;
     }
+
+
 
 }
